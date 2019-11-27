@@ -18,7 +18,7 @@ export default class DateLocation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            testing:"delete this"
         }
     }
 
