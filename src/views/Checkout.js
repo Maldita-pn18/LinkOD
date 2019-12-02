@@ -52,7 +52,7 @@ export default class Checkout extends Component {
         event.preventDefault();
         const { name, value } = event.target;
         let errors = this.state.errors;
-        const names = RegExp(/^[-ña-zA-Z]+$/);
+        const names = RegExp(/^[-ñ a-zA-Z]+$/);
         switch (name) {
             case 'firstName':
                 if (!names.test(value)) {

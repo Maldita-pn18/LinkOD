@@ -18,7 +18,18 @@ export default class DateLocation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            date: "",
+            time: "",
+            from: "",
+            to: "",
+            bus: "",
+            busNumber: "",
+            seats: "",
+            departureTime: "",
+            arrivalTime: "",
+            firstName: "",
+            lastName: "",
+            phone: "",
         }
     }
 
@@ -32,145 +43,177 @@ export default class DateLocation extends Component {
 
     tickets() {
 
+        const container = {
+            ticket: {
+                background: '#3b81b3',
+                width: '90%',
+                height: '300px',
+                margin: '100px auto',
+                border: '1px solid black',
+                borderRadius: '4px',
+                display: 'flex',
+                boxShadow: '1px 1px 5px 0px #0000005e'
+            },
+            p: {
+                borderBottom: '2px solid black',
+                // color:'white'
+                // textDecoration:'underline',
+                // textDecorationThickness:'5px'
+            },
+            h6: {
+                borderBottom: '2px solid black',
+                color: 'white',
+                borderBottomColor: 'white'
+                // textDecoration:'underline',
+                // textDecorationThickness:'5px'
+            },
+            seats:{
+                justify:'left',
+                width:'42%'
+            },
+            i: {
+                fontSize: '60px',
+                // color:'white'
+            },
+            ticket_left_h1: {
+                fontWeight: 'bold',
+                color: 'white'
+            },
+            ticket_left: {
+                padding: '20px',
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                borderRight: '2px dotted black',
+                color: 'white'
 
-        const classes = makeStyles(theme => ({
-            root: {
-                flexGrow: 1,
             },
-            paper: {
-                height: 140,
-                width: 100,
-                padding: theme.spacing(2),
-                textAlign: 'center',
-                color: theme.palette.text.secondary
-            },
-            formControl: {
-                margin: theme.spacing(1),
-                minWidth: 120,
-            },
-            selectEmpty: {
-                marginTop: theme.spacing(2),
+
+            desc: {
+                display: 'flex',
+                flexDirection: 'column',
 
             },
-            pos: {
-                marginBottom: 12,
+
+            desc_span: {
+                fontWeight: '300',
+                fontSize: '14px',
+
             },
-            textField: {
-                marginLeft: theme.spacing(1),
-                marginRight: theme.spacing(1),
+            ticket_right: {
+                width: '40%',
+                background: 'white',
+                padding: '20px',
+                border: '1px solid black',
+                borderRadius: '4px',
+                borderLeft: '0'
             },
-        }));
+            ticket_top: {
+                display: 'flex',
+                justifyContent: 'space-between',
+
+            },
+            ticket_white: {
+                marginBottom: '15px',
+            },
+            ticket_right_h1: {
+                fontWeight: 'bold',
+                fontSize: '20px'
+            },
+            ticket_right_p: {
+                fontWeight: '300',
+                fontSize: '14px',
+                marginBottom: '10px'
+            },
+            ticketBottom: {
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+            },
+            name: {
+                marginTop: '20px',
+            },
+
+            //   .name p {
+            //     font-size: 10px;
+            //   }
+
+            name_h1: {
+                fontSize: '13px',
+                margin: '0',
+                borderBottom: '2px solid black'
+            },
+
+            name_span: {
+                fontWeight: '300',
+                fontSize: '9px',
+                borderTop: '1px solid black',
+                paddingTop: '3px'
+            }
+
+
+        }
+
         return (
-            <div className={classes.root}>
-                <Header />
-                <Grid container spacing={3} justify="center" style={{ marginTop: '5%%' }}>
-                    <Grid item xs={8}>
-                        <Navigation />
-                        <Paper className={classes.paper} style={{ borderColor: 'secondary' }}>
-                            <Grid container justify='space-around' style={{ height: '10%' }}>
-                                <Grid style={{ width: '30%' }}>
-                                    <Card className={classes.card} style={{ maxHeight: '300px', marginTop: '8%' }}>
-                                        <CardActionArea>
-                                            <CardContent>
-                                                <Typography gutterBottom variant="h5" component="h2">
-                                                    Journey
-                                                </Typography>
-
-                                                <p>  <b>Date:</b> &nbsp;mm-dd-yyyy</p>
-                                                <p> <b>Departure from:</b> &nbsp; Place / Time</p>
-                                                <p><b> Arrive to: </b> &nbsp;Place/Time</p>
-                                                <b>Bus:</b>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                </Grid>
-                                <Grid style={{ width: '30%', maxHeight: '300px', marginTop: '2.5%' }}>
-                                    <Card className={classes.card}>
-                                        <CardActionArea>
-                                            <CardContent>
-                                                <Typography gutterBottom variant="h5" component="h2">
-                                                    Tickets
-                                                </Typography>
-
-                                                <p>  <b>Tickets:</b> &nbsp;1 Adult  x Price</p>
-                                                <p><b>Seats:</b> &nbsp; (Number of seats)</p>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                </Grid>
-                                <Grid style={{ width: '30%', marginTop: '2.5%', }}>
-                                    <Card className={classes.card}>
-                                        <CardActionArea>
-                                            <CardContent>
-                                                <Typography gutterBottom variant="h5" component="h2">
-                                                    Payment
-                                                </Typography>
-
-                                                <p>  <b>Tickets Total:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₱ 0 . 00</p>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                </Grid>
-                            </Grid>
-                            <br></br>
-                            <hr style={{ width: '96%' }}></hr>
-                            <Grid >
-                                <Grid container justify='space-around'>
-                                    <Card style={{ width: '97%' }}>
-                                        <CardContent>
-                                            <Grid>
-                                                <Typography gutterBottom variant="h6" component="h2">
-                                                    Personal Details
-                                                </Typography>
-                                                <Grid>
-                                                    <Typography gutterBottom variant="p" component="p">
-                                                        First Name :
-                                                </Typography>
-                                                    <Typography gutterBottom variant="p" component="p">
-                                                        Last Name :
-                                                </Typography>
-                                                    <Typography gutterBottom variant="p" component="p">
-                                                        Phone :
-                                                </Typography>
-                                                    <Typography gutterBottom variant="p" component="p">
-                                                        Email :
-                                                </Typography>
-                                                <Typography gutterBottom variant="p" component="p">
-                                                        Payment Method :
-                                                </Typography>
-                                                
-                                                </Grid>
-                                            </Grid>
-
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                            </Grid>
-                            <br></br>
-                            <br></br>
-                            <hr style={{ width: '96%' }}></hr>
-                            <Card>
-                                <CardActions>
-                                <Typography gutterBottom variant="p" component="p">
-                                                 &nbsp;&nbsp;Price:
-                                                </Typography>
-                                    <Grid container justify='flex-end'>
-                                        <Button size="small" color="primary">
-                                            Preview and Confirm
-                                    </Button>
-                                        <Grid container justify='flex-end'>
-                                            <Button size="small" color="primary">
-                                                Back
-                                    </Button>
-                                        </Grid>
-                                    </Grid>
-                                </CardActions>
-                            </Card>
-
-                        </Paper>
-                    </Grid>
-                </Grid>
-            </div >
+            <body>
+                <div class="container">
+                    <div class="row">
+                        <div class="ticket" style={container.ticket}>
+                            <div style={container.ticket_left} class="ticket-left">
+                                <div class="ticket01">
+                                    <h3 style={container.h6}>FROM</h3>
+                                    <h1 style={container.ticket_left_h1}>BOHOL</h1>
+                                    <div class="desc">
+                                        <span>SEPTEMBER 22, 2019</span>
+                                        <span> 04:10 AM</span>
+                                    </div>
+                                </div>
+                                <i style={container.i} class="fas fa-bus-alt"></i>
+                                <div class="ticket-2">
+                                    <h3 style={container.h6}>TO</h3>
+                                    <h1>DANAO</h1>
+                                    <div style={container.desc} class="desc">
+                                        <span style={container.desc.span}>SEPTEMBER 30, 2019</span>
+                                        <span style={container.desc.span}> 01:30 AM</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style={container.ticket_right} class="ticket-right">
+                                <div style={container.ticket_top} class="ticket-top">
+                                    <div class="ticket-white">
+                                        <p style={container.p}>FROM </p>
+                                        <h1 style={container.ticket_right_h1}>DANAO</h1>
+                                        <div style={container.desc} class="desc">
+                                            <span style={container.desc.span}>SEPTEMBER 22, 2019</span>
+                                            <span style={container.desc.span}> 04:10 AM</span>
+                                        </div>
+                                    </div>
+                                    <div style={container.ticket_white} class="ticket-white">
+                                        <p style={container.p}>TO </p>
+                                        <h1 style={container.ticket_right_h1}>CEBU</h1>
+                                        <div style={container.desc} class="desc">
+                                            <span style={container.desc.span}>SEPTEMBER 30, 2019</span>
+                                            <span style={container.desc.span}> 01:30 AM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style={container.ticketBottom} class="ticket-bottom">
+                                    <div style={container.name} class="name">
+                                        <h1 style={container.name_h1}>YOHANNE SMITH</h1>
+                                        <span style={container.desc.span}>ORDINARY</span>
+                                    </div>
+                                    <div style={container.seats}>
+                                        <h3>Seats:</h3>
+                                    </div>
+                                </div>
+                                <i style={container.i} class="fas fa-barcode"></i>
+                                <span style={container.desc.span}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thank you for using LINKOD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </body >
         )
     }
 
