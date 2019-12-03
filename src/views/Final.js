@@ -67,9 +67,15 @@ export default class Final extends Component {
                 // textDecoration:'underline',
                 // textDecorationThickness:'5px'
             },
+<<<<<<< HEAD
             seats: {
                 justify: 'left',
                 width: '42%'
+=======
+            seats:{
+                justify:'left',
+                width:'42%'
+>>>>>>> 25cf8ee11407888d43ef8bdf1a8bf5efc7dd8d20
             },
             i: {
                 fontSize: '60px',
@@ -87,6 +93,7 @@ export default class Final extends Component {
                 justifyContent: 'space-between',
                 borderRight: '2px dotted black',
                 color: 'white'
+<<<<<<< HEAD
 
             },
 
@@ -96,6 +103,17 @@ export default class Final extends Component {
 
             },
 
+=======
+
+            },
+
+            desc: {
+                display: 'flex',
+                flexDirection: 'column',
+
+            },
+
+>>>>>>> 25cf8ee11407888d43ef8bdf1a8bf5efc7dd8d20
             desc_span: {
                 fontWeight: '300',
                 fontSize: '14px',
@@ -116,6 +134,7 @@ export default class Final extends Component {
             },
             ticket_white: {
                 marginBottom: '15px',
+<<<<<<< HEAD
             },
             ticket_right_h1: {
                 fontWeight: 'bold',
@@ -126,6 +145,18 @@ export default class Final extends Component {
                 fontSize: '14px',
                 marginBottom: '10px'
             },
+=======
+            },
+            ticket_right_h1: {
+                fontWeight: 'bold',
+                fontSize: '20px'
+            },
+            ticket_right_p: {
+                fontWeight: '300',
+                fontSize: '14px',
+                marginBottom: '10px'
+            },
+>>>>>>> 25cf8ee11407888d43ef8bdf1a8bf5efc7dd8d20
             ticketBottom: {
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -150,17 +181,21 @@ export default class Final extends Component {
                 fontSize: '9px',
                 borderTop: '1px solid black',
                 paddingTop: '3px'
+<<<<<<< HEAD
             },
             info: {
                 color: '#3b81b3',
                 marginLeft: '90px'
 
+=======
+>>>>>>> 25cf8ee11407888d43ef8bdf1a8bf5efc7dd8d20
             }
 
 
         }
 
         return (
+<<<<<<< HEAD
             <div className="container">
                 <div className="row">
                     <div className="ticket" style={container.ticket}>
@@ -197,11 +232,32 @@ export default class Final extends Component {
                                     <p style={container.p}>TO </p>
                                     <h1 style={container.ticket_right_h1}>CEBU</h1>
                                     <div style={container.desc} className="desc">
+=======
+            <body>
+                <div class="container">
+                    <div class="row">
+                        <div class="ticket" style={container.ticket}>
+                            <div style={container.ticket_left} class="ticket-left">
+                                <div class="ticket01">
+                                    <h3 style={container.h6}>FROM</h3>
+                                    <h1 style={container.ticket_left_h1}>BOHOL</h1>
+                                    <div class="desc">
+                                        <span>SEPTEMBER 22, 2019</span>
+                                        <span> 04:10 AM</span>
+                                    </div>
+                                </div>
+                                <i style={container.i} class="fas fa-bus-alt"></i>
+                                <div class="ticket-2">
+                                    <h3 style={container.h6}>TO</h3>
+                                    <h1>DANAO</h1>
+                                    <div style={container.desc} class="desc">
+>>>>>>> 25cf8ee11407888d43ef8bdf1a8bf5efc7dd8d20
                                         <span style={container.desc.span}>SEPTEMBER 30, 2019</span>
                                         <span style={container.desc.span}> 01:30 AM</span>
                                     </div>
                                 </div>
                             </div>
+<<<<<<< HEAD
                             <div style={container.ticketBottom} className="ticket-bottom">
                                 <div style={container.name} className="name">
                                     <h1 style={container.name_h1}>YOHANNE SMITH</h1>
@@ -217,6 +273,43 @@ export default class Final extends Component {
                     </div>
                 </div>
             </div>
+=======
+                            <div style={container.ticket_right} class="ticket-right">
+                                <div style={container.ticket_top} class="ticket-top">
+                                    <div class="ticket-white">
+                                        <p style={container.p}>FROM </p>
+                                        <h1 style={container.ticket_right_h1}>DANAO</h1>
+                                        <div style={container.desc} class="desc">
+                                            <span style={container.desc.span}>SEPTEMBER 22, 2019</span>
+                                            <span style={container.desc.span}> 04:10 AM</span>
+                                        </div>
+                                    </div>
+                                    <div style={container.ticket_white} class="ticket-white">
+                                        <p style={container.p}>TO </p>
+                                        <h1 style={container.ticket_right_h1}>CEBU</h1>
+                                        <div style={container.desc} class="desc">
+                                            <span style={container.desc.span}>SEPTEMBER 30, 2019</span>
+                                            <span style={container.desc.span}> 01:30 AM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style={container.ticketBottom} class="ticket-bottom">
+                                    <div style={container.name} class="name">
+                                        <h1 style={container.name_h1}>YOHANNE SMITH</h1>
+                                        <span style={container.desc.span}>ORDINARY</span>
+                                    </div>
+                                    <div style={container.seats}>
+                                        <h3>Seats:</h3>
+                                    </div>
+                                </div>
+                                <i style={container.i} class="fas fa-barcode"></i>
+                                <span style={container.desc.span}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thank you for using LINKOD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </body >
+>>>>>>> 25cf8ee11407888d43ef8bdf1a8bf5efc7dd8d20
         )
     }
 
