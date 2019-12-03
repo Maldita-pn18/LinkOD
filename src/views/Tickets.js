@@ -208,13 +208,13 @@ export default class DateLocation extends Component {
                             <Card>
                                 <CardContent>
                                     <Typography gutterBottom variant="h6" component="h6">
-                                        Journey from <span><b>{this.state.journeyFrom}</b></span> to <span><b>{this.state.journeyTo}</b></span>
+                                        Journey from <span style={{color:'#3b81b3'}}><b>{this.state.journeyFrom}</b></span> to <span style={{color:'#3b81b3'}}><b>{this.state.journeyTo}</b></span>
                                     </Typography>
                                     <Typography gutterBottom variant="h6" component="h6">
-                                        Date of Departure: <span><b>{this.state.petsa}</b></span>
+                                        Date of Departure: <span style={{color:'#3b81b3'}}><b>{this.state.petsa}</b></span>
                                     </Typography>
                                     <Typography gutterBottom variant="h6" component="h6">
-                                        Departure Time: <span><b>{this.state.departureTime}</b></span>
+                                        Departure Time: <span style={{color:'#3b81b3'}}><b>{this.state.departureTime}</b></span>
                                     </Typography>
                                     <Table className={classes.table} aria-label="customized table">
                                         <TableHead>

@@ -9,6 +9,9 @@ import Navigation from '../components/navigationBar';
 import Typography from '@material-ui/core/Typography';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { Redirect } from "react-router-dom";
+import ReactDOM from 'react-dom';
+import Tickets from '../views/Tickets'
+import Button from '@material-ui/core/Button';
 
 const validateForm = (errors) => {
     let valid = true;
@@ -90,6 +93,9 @@ export default class Checkout extends Component {
                 break;
         }
         this.setState({ errors, [name]: value });
+    }
+    handleBack() {
+        ReactDOM.render(<Tickets />, document.getElementById('root'));
     }
 
 
@@ -234,19 +240,22 @@ export default class Checkout extends Component {
                                             </div>
                                             <div className='pay'>
                                                 <p>Payment Method:<b>CASH</b></p>
-                                            </div>
-                                            <Typography gutterBottom variant="h6" component="h6">
+                                                <Typography gutterBottom variant="h6" component="h6">
                                                 &nbsp;&nbsp;Price:
+                                                <hr style={{ width: '96%' }}></hr>
                                                 </Typography>
-                                            <hr style={{ width: '96%' }}></hr>
+                                            </div>                  
                                         </form>
                                     </Grid>
                                 </Grid>
-                                <div className='submit'>
-                                    <button id='checkout' onClick={this.handleSubmit}>Preview & Confirm</button>
-                                    <button id='back'>Back</button>
-                                </div>
-
+                                    <Grid container justify='flex-end'>
+                                        <Button size="small" color="primary" type="submit"   style={{marginRight:'20px', marginBottom:'10px'}}onClick={this.handleSubmit}>Preview & Confirm</Button>
+                                        <Grid container justify='flex-end'>
+                                            <Button size="small" color="primary" style={{marginRight:'20px', marginBottom:'20px'}} onClick={this.handleBack}>
+                                                Back
+                                    </Button>
+                                        </Grid>
+                                    </Grid>
                             </Grid>
                         </Paper>
                     </Grid>

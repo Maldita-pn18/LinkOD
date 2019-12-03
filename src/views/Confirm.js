@@ -1,18 +1,20 @@
 
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Header from '../components/Header';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Navigation from '../components/navigationBar';
 import Typography from '@material-ui/core/Typography';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import Final from './Final';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
+import ReactDOM from 'react-dom';
+import Datelocation from '../views/Datelocation';
+import Link from '@material-ui/core/Link';
+import { Redirect } from "react-router-dom";
 
 
 
@@ -27,6 +29,23 @@ export default class Confirm extends Component {
             confirmGmail: "",
             confirmCp: "",
             confirmPay: "",
+            book: "",
+            bookSaved: "",
+            toStartOver: false,
+
+
+        }
+    }
+
+    toStartOver = () => {
+        ReactDOM.render(<Datelocation/>, document.getElementById('root'));
+
+    }
+    confirm = () =>{
+        if(this.state.book === ""){
+            this.setState({ book: "Your booking is saved." });
+            
+            
 
         }
     }
@@ -42,6 +61,9 @@ export default class Confirm extends Component {
     }
 
     render() {
+        if(this.state.toStartOver){
+            return <Redirect to={{ pathname: "/" }} />;
+          }
         return (
             <div>
                 {this.tickets()}
@@ -160,11 +182,11 @@ export default class Confirm extends Component {
 
                                                 </Grid>
                                             </Grid>
-
                                         </CardContent>
                                     </Card>
                                 </Grid>
                             </Grid>
+                            <p style={{ marginLeft: '2%' }}>{this.state.book} </p>
                             <br></br>
                             <br></br>
                             <hr style={{ width: '96%' }}></hr>

@@ -96,8 +96,7 @@ export default class DateLocation extends Component {
             this.setState({ fromRequire: "Required field", toRequired: "Required field" })
         }
     };
-
-    render() {
+    handleSubmitData = ()=>{
         if (this.state.toTickets) {
             //go to the Ticket Component
             this.setState({ toRequiredColor: { color: "black" }, fromRequiredColor: { color: "black" } })
@@ -111,175 +110,181 @@ export default class DateLocation extends Component {
                 }
             }} />
         }
-        return (
-            <div>
-                {this.datelocation()}
-            </div>
-        )
     }
 
-    datelocation() {
-        const dating = date => {
-            let months = {
-                '0': 'January',
-                '1': 'February',
-                '2': 'March',
-                '3': 'April',
-                '4': 'May',
-                '5': 'June',
-                '6': 'July',
-                '7': 'August',
-                '8': 'September',
-                '9': 'October',
-                '10': 'November',
-                '11': 'December'
+    render() {
+
+            return (
+                <div>
+                    {this.datelocation()}
+                    {this.handleSubmitData()}
+                </div>
+            )
+        }
+
+        datelocation() {
+            const dating = date => {
+                let months = {
+                    '0': 'January',
+                    '1': 'February',
+                    '2': 'March',
+                    '3': 'April',
+                    '4': 'May',
+                    '5': 'June',
+                    '6': 'July',
+                    '7': 'August',
+                    '8': 'September',
+                    '9': 'October',
+                    '10': 'November',
+                    '11': 'December'
+                }
+                let month = new Date(date).getMonth();
+                month = months[String(month)];
+                let day = new Date(date).getDate();
+                let Year = new Date(date).getFullYear();
+                let updatedDate = month + ' ' + day + ', ' + Year
+                this.setState({ date: updatedDate, displayDate: date })
+            };
+
+            const time = time => {
+                let hour = time.getHours();
+                let minutes = time.getMinutes();
+                var ampm = hour >= 12 ? 'pm' : 'am';
+                hour = hour % 12;
+                hour = hour ? hour : 12;
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+
+                let times = hour + ':' + minutes + ' ' + ampm;
+                this.setState({ time: times, displayTime: time })
             }
-            let month = new Date(date).getMonth();
-            month = months[String(month)];
-            let day = new Date(date).getDate();
-            let Year = new Date(date).getFullYear();
-            let updatedDate = month + ' ' + day + ', ' + Year
-            this.setState({ date: updatedDate, displayDate: date })
-        };
 
-        const time = time => {
-            let hour = time.getHours();
-            let minutes = time.getMinutes();
-            var ampm = hour >= 12 ? 'pm' : 'am';
-            hour = hour % 12;
-            hour = hour ? hour : 12;
-            minutes = minutes < 10 ? '0' + minutes : minutes;
-
-            let times = hour + ':' + minutes + ' ' + ampm;
-            this.setState({ time: times, displayTime: time })
-        }
-
-        const from = from => event => {
-            this.setState({ [from]: event.target.value })
-        }
-        const to = to => event => {
-            this.setState({ [to]: event.target.value })
-        }
+            const from = from => event => {
+                this.setState({ [from]: event.target.value })
+            }
+            const to = to => event => {
+                this.setState({ [to]: event.target.value })
+            }
 
 
 
-        const classes = makeStyles(theme => ({
-            root: {
-                flexGrow: 1,
-            },
-            paper: {
-                height: 100,
-                padding: theme.spacing(2),
-                textAlign: 'center',
-                color: theme.palette.text.secondary
-            },
-            formControl: {
-                margin: theme.spacing(1),
-                minWidth: 120,
-            },
-            selectEmpty: {
-                marginTop: theme.spacing(2),
-            },
-        }));
+            const classes = makeStyles(theme => ({
+                root: {
+                    flexGrow: 1,
+                },
+                paper: {
+                    height: 100,
+                    padding: theme.spacing(2),
+                    textAlign: 'center',
+                    color: theme.palette.text.secondary
+                },
+                formControl: {
+                    margin: theme.spacing(1),
+                    minWidth: 120,
+                },
+                selectEmpty: {
+                    marginTop: theme.spacing(2),
+                },
+            }));
 
-        return (
-            <div className={classes.root}>
-                <Header />
-                <Grid container spacing={3} justify="center" style={{ marginTop: '7%' }}>
-                    <Grid item xs={8}>
-                        <Navigation />
-                        <Paper className={classes.paper}>
-                            <Card>
-                                <CardContent>
-                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                        <Grid container justify='space-around'>
-                                            <Grid>
-                                                <KeyboardDatePicker
-                                                    disableToolbar
-                                                    variant="inline"
-                                                    format="MM/dd/yyyy"
-                                                    margin="normal"
-                                                    id="date-picker-inline"
-                                                    label="Departure Date"
-                                                    value={this.state.displayDate}
-                                                    onChange={dating}
-                                                    KeyboardButtonProps={{
-                                                        'aria-label': 'change date',
-                                                    }}
-                                                />
-                                            </Grid>
-                                            <Grid>
-                                                <KeyboardTimePicker
-                                                    margin="normal"
-                                                    id="time-picker"
-                                                    label="Departure Time"
-                                                    value={this.state.displayTime}
-                                                    onChange={time}
-                                                    KeyboardButtonProps={{
-                                                        'aria-label': 'change time',
-                                                    }}
-                                                />
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container justify="space-around" >
-                                            <Grid>
-                                                <FormControl className={classes.formControl} style={{ width: '250px' }}>
-                                                    <InputLabel shrink htmlFor="age-native-label-placeholder">
-                                                        From:
-                                                </InputLabel>
-                                                    <NativeSelect
-                                                        value={this.state.from}
-                                                        onChange={from('from')}
-                                                        inputProps={{
-                                                            name: 'from',
-                                                            id: 'age-native-label-placeholder',
+            return (
+                <div className={classes.root}>
+                    <Header />
+                    <Grid container spacing={3} justify="center" style={{ marginTop: '7%' }}>
+                        <Grid item xs={8}>
+                            <Navigation />
+                            <Paper className={classes.paper}>
+                                <Card>
+                                    <CardContent>
+                                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                            <Grid container justify='space-around'>
+                                                <Grid>
+                                                    <KeyboardDatePicker
+                                                        disableToolbar
+                                                        variant="inline"
+                                                        format="MM/dd/yyyy"
+                                                        margin="normal"
+                                                        id="date-picker-inline"
+                                                        label="Departure Date"
+                                                        value={this.state.displayDate}
+                                                        onChange={dating}
+                                                        KeyboardButtonProps={{
+                                                            'aria-label': 'change date',
                                                         }}
-                                                    >
-                                                        <option value={''}></option>
-                                                        <option value={'Talisay'}>Talisay</option>
-                                                        <option value={'Parkmall'}>Parkmall</option>
-                                                        <option value={'SM Seaside'}>SM Seaside</option>
-                                                        <option value={'SM City'}>SM City</option>
-                                                    </NativeSelect>
-                                                    <FormHelperText style={this.state.fromRequiredColor}>{this.state.fromRequire}</FormHelperText>
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid>
-                                                <FormControl className={classes.formControl} style={{ width: '250px' }}>
-                                                    <InputLabel shrink htmlFor="age-native-label-placeholder">
-                                                        To:
-                                                </InputLabel>
-                                                    <NativeSelect
-                                                        value={this.state.to}
-                                                        onChange={to('to')}
-                                                        inputProps={{
-                                                            name: 'to',
-                                                            id: 'age-native-label-placeholder',
+                                                    />
+                                                </Grid>
+                                                <Grid>
+                                                    <KeyboardTimePicker
+                                                        margin="normal"
+                                                        id="time-picker"
+                                                        label="Departure Time"
+                                                        value={this.state.displayTime}
+                                                        onChange={time}
+                                                        KeyboardButtonProps={{
+                                                            'aria-label': 'change time',
                                                         }}
-                                                    >
-                                                        <option value={''}></option>
-                                                        <option value={'Parkmall'}>Parkmall</option>
-                                                        <option value={'SM Seaside'}>SM Seaside</option>
-                                                        <option value={'Sanremo'}>Sanremo</option>
-                                                        <option value={'Mactan Airport'}>Mactan Airport</option>
-                                                    </NativeSelect>
-                                                    <FormHelperText style={this.state.toRequiredColor}>{this.state.toRequired}</FormHelperText>
-                                                </FormControl>
+                                                    />
+                                                </Grid>
                                             </Grid>
+                                            <Grid container justify="space-around" >
+                                                <Grid>
+                                                    <FormControl className={classes.formControl} style={{ width: '250px' }}>
+                                                        <InputLabel shrink htmlFor="age-native-label-placeholder">
+                                                            From:
+                                                </InputLabel>
+                                                        <NativeSelect
+                                                            value={this.state.from}
+                                                            onChange={from('from')}
+                                                            inputProps={{
+                                                                name: 'from',
+                                                                id: 'age-native-label-placeholder',
+                                                            }}
+                                                        >
+                                                            <option value={''}></option>
+                                                            <option value={'Talisay'}>Talisay</option>
+                                                            <option value={'Parkmall'}>Parkmall</option>
+                                                            <option value={'SM Seaside'}>SM Seaside</option>
+                                                            <option value={'SM City'}>SM City</option>
+                                                        </NativeSelect>
+                                                        <FormHelperText style={this.state.fromRequiredColor}>{this.state.fromRequire}</FormHelperText>
+                                                    </FormControl>
+                                                </Grid>
+                                                <Grid>
+                                                    <FormControl className={classes.formControl} style={{ width: '250px' }}>
+                                                        <InputLabel shrink htmlFor="age-native-label-placeholder">
+                                                            To:
+                                                </InputLabel>
+                                                        <NativeSelect
+                                                            value={this.state.to}
+                                                            onChange={to('to')}
+                                                            inputProps={{
+                                                                name: 'to',
+                                                                id: 'age-native-label-placeholder',
+                                                            }}
+                                                        >
+                                                            <option value={''}></option>
+                                                            <option value={'Parkmall'}>Parkmall</option>
+                                                            <option value={'SM Seaside'}>SM Seaside</option>
+                                                            <option value={'Sanremo'}>Sanremo</option>
+                                                            <option value={'Mactan Airport'}>Mactan Airport</option>
+                                                        </NativeSelect>
+                                                        <FormHelperText style={this.state.toRequiredColor}>{this.state.toRequired}</FormHelperText>
+                                                    </FormControl>
+                                                </Grid>
+                                            </Grid>
+                                        </MuiPickersUtilsProvider>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Grid container justify='flex-end'>
+                                            <Button size="small" color="primary" type="submit" onClick={this.checkCredential} >CHECK AVAILABILITY</Button>
                                         </Grid>
-                                    </MuiPickersUtilsProvider>
-                                </CardContent>
-                                <CardActions>
-                                    <Grid container justify='flex-end'>
-                                        <Button size="small" color="primary" type="submit" onClick={this.checkCredential} >CHECK AVAILABILITY</Button>
-                                    </Grid>
-                                </CardActions>
-                            </Card>
-                        </Paper>
+                                    </CardActions>
+                                </Card>
+                            </Paper>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </div>
-        )
+                </div>
+            )
+        }
+
     }
 
-}

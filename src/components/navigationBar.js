@@ -5,7 +5,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ReactDOM from 'react-dom';
-import DateFnsUtils from '@date-io/date-fns';
 import DateLocation from '../views/Datelocation';
 import Tickets from '../views/Tickets';
 import Checkout from '../views/Checkout';
