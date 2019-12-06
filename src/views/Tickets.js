@@ -20,6 +20,7 @@ import Typography from '@material-ui/core/Typography';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import { Redirect } from "react-router-dom";
 import Checkout from './Checkout';
 
 
@@ -40,22 +41,47 @@ export default class DateLocation extends Component {
             journeyTo: "",
             journeyFrom: "",
             petsa: "",
+            toCheckout: false
         }
     }
-    checkout = () => {
-        if (this.state.adult === "" & this.state.child === "") {
+
+    validation = () => {
+        if (this.state.adult === "" && this.state.child === "") {
             alert("Input fields")
         } else {
-            ReactDOM.render(<Checkout />, document.getElementById('root'));
+            this.setState({ toCheckout: true })
+            // ReactDOM.render(<Checkout />, document.getElementById('root'));
         }
     };
 
+    checkout = () => {
+        if (this.state.toCheckout) {
+            if (this.state.toCheckout) {
+                return <Redirect to={{
+                    pathname: "/checkout",
+                    state: {
+                        Bus: this.state.bus,
+                        AvailableSeat: this.state.availableSeat,
+                        DepartureTime: this.state.departureTime,
+                        ArrivalTime: this.arrivalTime,
+                        Duration: this.state.duration,
+                        Adult: this.adult,
+                        Child: this.child,
+                        JourneyTo: this.journeyTo,
+                        JourneyFrom: this.journeyFrom,
+                        Petsa: this.petsa
+                    }
+                }} />
+            }
+        }
+    }
+
     componentDidMount() {
-        this.setState({ 
+        this.setState({
             journeyTo: this.props.location.state.journeyTo,
             journeyFrom: this.props.location.state.journeyFrom,
-            petsa:this.props.location.state.petsa,
-            departureTime:this.props.location.state.departureTime
+            petsa: this.props.location.state.petsa,
+            departureTime: this.props.location.state.departureTime
         });
     }
 
@@ -63,6 +89,7 @@ export default class DateLocation extends Component {
         return (
             <div>
                 {this.tickets()}
+                {this.checkout()}
             </div>
         )
     }
@@ -121,7 +148,7 @@ export default class DateLocation extends Component {
             });
         }
         return (
-            <FormControl required className={classes.formControl}>
+            <FormControl required>
                 <InputLabel htmlFor="Child">Child</InputLabel>
                 <Select
                     native
@@ -208,13 +235,13 @@ export default class DateLocation extends Component {
                             <Card>
                                 <CardContent>
                                     <Typography gutterBottom variant="h6" component="h6">
-                                        Journey from <span style={{color:'#3b81b3'}}><b>{this.state.journeyFrom}</b></span> to <span style={{color:'#3b81b3'}}><b>{this.state.journeyTo}</b></span>
+                                        Journey from <span style={{ color: '#3b81b3' }}><b>{this.state.journeyFrom}</b></span> to <span style={{ color: '#3b81b3' }}><b>{this.state.journeyTo}</b></span>
                                     </Typography>
                                     <Typography gutterBottom variant="h6" component="h6">
-                                        Date of Departure: <span style={{color:'#3b81b3'}}><b>{this.state.petsa}</b></span>
+                                        Date of Departure: <span style={{ color: '#3b81b3' }}><b>{this.state.petsa}</b></span>
                                     </Typography>
                                     <Typography gutterBottom variant="h6" component="h6">
-                                        Departure Time: <span style={{color:'#3b81b3'}}><b>{this.state.departureTime}</b></span>
+                                        Departure Time: <span style={{ color: '#3b81b3' }}><b>{this.state.departureTime}</b></span>
                                     </Typography>
                                     <Table className={classes.table} aria-label="customized table">
                                         <TableHead>
@@ -246,7 +273,7 @@ export default class DateLocation extends Component {
                                         &nbsp;&nbsp;Price:
                                                 </Typography>
                                     <Grid container justify='flex-end'>
-                                        <Button size="small" color="primary" type="submit" onClick={this.checkout} >Checkout</Button>
+                                        <Button size="small" color="primary" type="submit" onClick={this.validation} >Checkout</Button>
                                         <Grid container justify='flex-end'>
                                             <Button size="small" color="primary">
                                                 Back

@@ -13,7 +13,7 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import ReactDOM from 'react-dom';
 import Datelocation from '../views/Datelocation';
-import Link from '@material-ui/core/Link';
+import Final from '../views/Final'
 import { Redirect } from "react-router-dom";
 
 
@@ -32,21 +32,23 @@ export default class Confirm extends Component {
             book: "",
             bookSaved: "",
             toStartOver: false,
-
-
+            confirm:"confirm"
         }
     }
+    // toTicket = () => {
+    //     ReactDOM.render(<Final/>, document.getElementById('root'));
+
+    // }
 
     toStartOver = () => {
-        ReactDOM.render(<Datelocation/>, document.getElementById('root'));
+        ReactDOM.render(<Datelocation />, document.getElementById('root'));
 
     }
-    confirm = () =>{
-        if(this.state.book === ""){
-            this.setState({ book: "Your booking is saved." });
-            
-            
-
+    confirm = () => {
+        if (this.state.book === "") {
+            this.setState({ book: "Your booking is saved.",confirm:"save"});
+        }else{
+            ReactDOM.render(<Final/>, document.getElementById('root'));
         }
     }
 
@@ -61,9 +63,9 @@ export default class Confirm extends Component {
     }
 
     render() {
-        if(this.state.toStartOver){
+        if (this.state.toStartOver) {
             return <Redirect to={{ pathname: "/" }} />;
-          }
+        }
         return (
             <div>
                 {this.tickets()}
@@ -196,7 +198,7 @@ export default class Confirm extends Component {
                                         &nbsp;&nbsp;Price:
                                                 </Typography>
                                     <Grid container justify='flex-end'>
-                                        <Button size="small" color="primary" type="submit" onClick={this.confirm} >Confirm</Button>
+        <Button size="small" color="primary" type="submit" onClick={this.confirm} >{this.state.confirm}</Button>
                                         <Grid container justify='flex-end'>
                                             <Button size="small" color="primary">
                                                 Back

@@ -16,11 +16,7 @@ function App() {
         <Route path="/tickets" component={Tickets} />
         <Route path="/confirm" component={Confirm} />
         <Route path="/checkout" component={Checkout} />
-<<<<<<< HEAD
         <Route path="/final" component={Final} />
-=======
-        <Route path="/final" component={Final}/>
->>>>>>> 25cf8ee11407888d43ef8bdf1a8bf5efc7dd8d20
       </Switch>
     </BrowserRouter>
   );

@@ -37,6 +37,19 @@ export default class Checkout extends Component {
             formValid: false,
             errorCount: null,
             toConfirm: false,
+            date:"",
+            depart_from:"",
+            arrive_to:"",
+            departure_time:"",
+            arrive_time:"",
+            adult_fair:"",
+            adult_passenger:"",
+            child_fair:"",
+            child_passenger:"",
+            seats:"",
+            bus:"",
+            busNumber:"",
+            bill:"",
             fName: "",
             lName: "",
             email: "",
@@ -49,6 +62,33 @@ export default class Checkout extends Component {
                 phone: '',
             }
         };
+    }
+
+    componentDidMount(){
+        // Bus: this.state.bus,
+        // AvailableSeat: this.state.availableSeat,
+        // DepartureTime: this.state.departureTime,
+        // ArrivalTime: this.arrivalTime,
+        // Duration: this.state.duration,
+        // Adult: this.adult,
+        // Child: this.child,
+        // JourneyTo: this.journeyTo,
+        // JourneyFrom: this.journeyFrom,
+        // Petsa: this.petsa
+        this.setState({
+            date: this.props.location.state.Date,
+            depart_from: this.props.location.state.JourneyFrom,
+            arrive_to: this.props.location.state.JourneyTo,
+            departure_time: this.props.location.state.DepartureTime,
+            arrive_time: this.props.location.state.JourneyFrom,
+            adult_fair: "",
+            adult_passenger: this.props.location.state.Adult,
+            child_fair: "",
+            child_passenger: this.props.location.state.Child,
+            seats: this.props.location.state.AvailableSeat,
+            bus: this.props.location.state.Bus,
+            busNumber: "",
+        })
     }
 
     handleChange = (event) => {
@@ -95,7 +135,7 @@ export default class Checkout extends Component {
         this.setState({ errors, [name]: value });
     }
     handleBack() {
-        ReactDOM.render(<Tickets />, document.getElementById('root'));
+        //ReactDOM.render(<Tickets />, document.getElementById('root'));
     }
 
 
@@ -176,10 +216,11 @@ export default class Checkout extends Component {
                                                     Journey
                                                 </Typography>
 
-                                                <p>  <b>Date:</b> &nbsp;mm-dd-yyyy</p>
-                                                <p> <b>Departure from:</b> &nbsp; Place / Time</p>
-                                                <p><b> Arrive to: </b> &nbsp;Place/Time</p>
-                                                <b>Bus:</b>
+                                                <p><b>Date:</b>&nbsp;{this.state.date}</p>
+                                                <p><b>Depart from:</b> &nbsp;{this.state.depart_from + " / " + this.state.departure_time}</p>
+                                                <p><b> Arrive to: </b> &nbsp;{this.state.arrive_to + " / " + this.state.arrive_time}</p>
+                                                <p><b>Bus: {this.state.bus}</b></p>
+                                                <p><b>Bus Number: {this.state.busNumber}</b></p>
                                             </CardContent>
                                         </CardActionArea>
                                     </Card>
@@ -192,8 +233,9 @@ export default class Checkout extends Component {
                                                     Tickets
                                                 </Typography>
 
-                                                <p>  <b>Tickets:</b> &nbsp;1 Adult  x Price</p>
-                                                <p><b>Seats:</b> &nbsp; (Number of seats)</p>
+                                                <p><b>Adult:</b> &nbsp;{this.state.adult_passenger + " x " + this.state.adult_fair}</p>
+                                                <p><b>SP:</b> &nbsp;{this.state.child_passenger + " x " + this.state.child_fair}</p>
+                                                <p><b>Seats:</b> &nbsp; {this.state.seats}</p>
                                             </CardContent>
                                         </CardActionArea>
                                     </Card>
@@ -206,7 +248,7 @@ export default class Checkout extends Component {
                                                     Payment
                                                 </Typography>
 
-                                                <p>  <b>Tickets Total:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₱ 0 . 00</p>
+                                                <p>  <b>Tickets Total:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"₱ " + this.state.bill + ".00"}</p>
                                             </CardContent>
                                         </CardActionArea>
                                     </Card>
@@ -241,21 +283,21 @@ export default class Checkout extends Component {
                                             <div className='pay'>
                                                 <p>Payment Method:<b>CASH</b></p>
                                                 <Typography gutterBottom variant="h6" component="h6">
-                                                &nbsp;&nbsp;Price:
+                                                    &nbsp;&nbsp;Price:
                                                 <hr style={{ width: '96%' }}></hr>
                                                 </Typography>
-                                            </div>                  
+                                            </div>
                                         </form>
                                     </Grid>
                                 </Grid>
+                                <Grid container justify='flex-end'>
+                                    <Button size="small" color="primary" type="submit" style={{ marginRight: '20px', marginBottom: '10px' }} onClick={this.handleSubmit}>Preview</Button>
                                     <Grid container justify='flex-end'>
-                                        <Button size="small" color="primary" type="submit"   style={{marginRight:'20px', marginBottom:'10px'}}onClick={this.handleSubmit}>Preview & Confirm</Button>
-                                        <Grid container justify='flex-end'>
-                                            <Button size="small" color="primary" style={{marginRight:'20px', marginBottom:'20px'}} onClick={this.handleBack}>
-                                                Back
+                                        <Button size="small" color="primary" style={{ marginRight: '20px', marginBottom: '20px' }} onClick={this.handleBack}>
+                                            Back
                                     </Button>
-                                        </Grid>
                                     </Grid>
+                                </Grid>
                             </Grid>
                         </Paper>
                     </Grid>
@@ -264,7 +306,7 @@ export default class Checkout extends Component {
         )
     }
 
-    render() {
+    confirm() {
         if (this.state.toConfirm) {
             return <Redirect to={{
                 pathname: "/confirm",
@@ -277,9 +319,13 @@ export default class Checkout extends Component {
                 }
             }} />
         }
+    }
+
+    render() {
         return (
             <div>
                 {this.checkout()}
+                {this.confirm()}
             </div>
         )
     }

@@ -113,7 +113,6 @@ export default class DateLocation extends Component {
     }
 
     render() {
-
             return (
                 <div>
                     {this.datelocation()}
@@ -164,6 +163,7 @@ export default class DateLocation extends Component {
             const to = to => event => {
                 this.setState({ [to]: event.target.value })
             }
+                
 
 
 
