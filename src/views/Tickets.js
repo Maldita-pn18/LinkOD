@@ -47,7 +47,7 @@ export default class DateLocation extends Component {
             adult_fare: "",
             seats: "[3,1]",
             availableBus: "",
-            toCheckout: false
+            toCheckout: false,
         }
     }
 
@@ -92,9 +92,9 @@ export default class DateLocation extends Component {
             journeyFrom: this.props.location.state.journeyFrom,
             petsa: this.props.location.state.petsa,
             time: this.props.location.state.time,
-            availableBus:this.props.location.state.availableBus,
+            availableBus: this.props.location.state.availableBus,
         });
-        
+
     }
     render() {
         return (
@@ -118,7 +118,7 @@ export default class DateLocation extends Component {
 
         const handleChange = name => event => {
             this.setState({
-                [name]: event.target.value,
+                [name]: event.target.value
             });
         }
         return (
@@ -201,24 +201,44 @@ export default class DateLocation extends Component {
             },
         }))(TableRow);
 
-        function createData(bus, availableSeat, departureTime, arrivalTime, duration) {
-            return { bus, availableSeat, departureTime, arrivalTime, duration };
+        function createData(bus, availableSeat, departureTime, arrivalTime, duration, action) {
+            return { bus, availableSeat, departureTime, arrivalTime, duration, action };
         }
 
         let rows = [];
 
         function busInfo(bus, Adult, Child) {
+            let style = {
+                actions: {
+                    fontSize: "20px",
+                    margin: '5px',
+                    cursor: 'pointer',
+                    borderRadius: '50%'
+                }
+            }
             for (var i = 0; i < bus.length; ++i) {
+                let available_seat = [];
+                for (const property in bus[i].bus.seats) {
+                    if(bus[i].bus.seats[property] == true){
+                        available_seat.push(property)
+                    }
+                }
                 rows.push(createData(
                     bus[i].busName,
                     <div>
                         {Adult}&nbsp;&nbsp;&nbsp;&nbsp;{Child}
                         <p align="left">Child Price:&nbsp;&nbsp;&nbsp;{bus[i].fare.child}</p>
                         <p align="left">Adult Price:&nbsp;&nbsp;&nbsp;{bus[i].fare.adult}</p>
+                        <p align="left">Available Seats:&nbsp;&nbsp;&nbsp;{JSON.stringify(available_seat)}</p>
                     </div>,
                     bus[i].startTime,
                     bus[i].endTime,
-                    bus[i].duration
+                    bus[i].duration,
+                    // <Button color="primary" id={bus[i]._id}>BOOK THIS</Button>
+                    <div>
+                        <i className="far fa-check-circle" style={style.actions} id={bus[i]._id}></i>
+                        <i className="ticketActions far fa-times-circle" style={style.actions}></i>
+                    </div>
                 ))
             }
         }
@@ -283,6 +303,7 @@ export default class DateLocation extends Component {
                                                     <StyledTableCell align="center">{row.departureTime}</StyledTableCell>
                                                     <StyledTableCell align="center">{row.arrivalTime}</StyledTableCell>
                                                     <StyledTableCell align="center">{row.duration}</StyledTableCell>
+                                                    <StyledTableCell align="center">{row.action}</StyledTableCell>
                                                 </StyledTableRow>
                                             ))}
                                         </TableBody>
