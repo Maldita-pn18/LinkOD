@@ -18,18 +18,24 @@ export default class Final extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            date: "",
-            time: "",
-            from: "",
-            to: "",
+            fName: "",
+            lName: "",
+            email: "",
+            phone: "",
+            paymentMethod: "",
+            book: "",
+            bookSaved: "",
             bus: "",
             busNumber: "",
             seats: "",
             departureTime: "",
             arrivalTime: "",
-            firstName: "",
-            lastName: "",
-            phone: "",
+            duration: "",
+            adult: "",
+            child: "",
+            journeyTo: "",
+            journeyFrom: "",
+            petsa: "",
         }
     }
 
@@ -39,6 +45,28 @@ export default class Final extends Component {
                 {this.tickets()}
             </div>
         )
+    }
+    componentDidMount() {
+        this.setState({
+            fName: this.props.location.state.fName,
+            lName: this.props.location.state.lName,
+            email: this.props.location.state.email,
+            phone: this.props.location.state.phone,
+            paymentMethod: this.props.location.state.paymentMethod,
+            petsa: this.props.location.state.petsa,
+            bus: this.props.location.state.bus,
+            journeyFrom: this.props.location.state.journeyFrom,
+            journeyTo: this.props.location.state.journeyTo,
+            departureTime: this.props.location.state.departureTime,
+            arrivalTime: this.props.location.state.arrivalTime,
+            adult_fare: this.props.location.state.adult_fare,
+            child_fare: this.props.location.state.child_fare,
+            child: this.props.location.state.child,
+            adult: this.props.location.state.adult,
+            bus: this.props.location.state.bus,
+            busNumber: this.props.location.state.busNumber,
+            seats: this.props.location.state.seats,
+        });
     }
 
     tickets() {
@@ -81,6 +109,7 @@ export default class Final extends Component {
                 color: 'white'
             },
             ticket_left: {
+                textAlign: 'left',
                 padding: '20px',
                 width: '100%',
                 display: 'flex',
@@ -141,7 +170,7 @@ export default class Final extends Component {
             //   }
 
             name_h1: {
-                fontSize: '13px',
+                fontSize: '20px',
                 margin: '0',
                 borderBottom: '2px solid black'
             },
@@ -154,7 +183,8 @@ export default class Final extends Component {
             },
             info: {
                 color: '#3b81b3',
-                marginLeft: '50px'
+                marginLeft: '50px',
+                fontSize: '20px'
 
             }
 
@@ -168,19 +198,18 @@ export default class Final extends Component {
                         <div style={container.ticket_left} className="ticket-left">
                             <div className="ticket01">
                                 <h3 style={container.h6}>FROM</h3>
-                                <h1 style={container.ticket_left_h1}>BOHOL</h1>
+                                <h1 style={container.ticket_left_h1}>{this.state.journeyFrom}</h1>
                                 <div className="desc">
-                                    <span>SEPTEMBER 22, 2019</span>
-                                    <span> 04:10 AM</span>
+                                    <span>{this.state.departureTime}</span>
                                 </div>
                             </div>
-                            <i style={container.i} className="fas fa-bus-alt"></i>
+                            <i style={container.i} className="fas fa-bus-alt">&nbsp;&nbsp;{this.state.bus}</i>
                             <div className="ticket-2">
                                 <h3 style={container.h6}>TO</h3>
-                                <h1>DANAO</h1>
+                                <h1>{this.state.journeyTo}</h1>
                                 <div style={container.desc} className="desc">
-                                    <span style={container.desc.span}>SEPTEMBER 30, 2019</span>
-                                    <span style={container.desc.span}> 01:30 AM</span>
+                                    <span style={container.desc.span}>{this.state.arrivalTime}</span>
+                                    {/* <span style={container.desc.span}> 01:30 AM</span> */}
                                 </div>
                             </div>
                         </div>
@@ -188,31 +217,32 @@ export default class Final extends Component {
                             <div style={container.ticket_top} className="ticket-top">
                                 <div className="ticket-white">
                                     <p style={container.p}>FROM </p>
-                                    <h1 style={container.ticket_right_h1}>DANAO</h1>
+                                    <h1 style={container.ticket_right_h1}>{this.state.journeyFrom}</h1>
                                     <div style={container.desc} className="desc">
-                                        <span style={container.desc.span}>SEPTEMBER 22, 2019</span>
-                                        <span style={container.desc.span}> 04:10 AM</span>
+                                        <span style={container.desc.span}>{this.state.departureTime}</span>
+                                        {/* <span style={container.desc.span}> 04:10 AM</span> */}
                                     </div>
                                 </div>
                                 <div style={container.ticket_white} className="ticket-white">
                                     <p style={container.p}>TO </p>
-                                    <h1 style={container.ticket_right_h1}>CEBU</h1>
+                                    <h1 style={container.ticket_right_h1}>{this.state.journeyTo}</h1>
                                     <div style={container.desc} className="desc">
-                                        <span style={container.desc.span}>SEPTEMBER 30, 2019</span>
-                                        <span style={container.desc.span}> 01:30 AM</span>
+                                        <span style={container.desc.span}>{this.state.arrivalTime}</span>
+                                        {/* <span style={container.desc.span}> 01:30 AM</span> */}
                                     </div>
                                 </div>
                             </div>
                             <div style={container.ticketBottom} className="ticket-bottom">
                                 <div style={container.name} className="name">
-                                    <h1 style={container.name_h1}>YOHANNE SMITH</h1>
-                                    <span style={container.desc.span}>ORDINARY</span>
+                                    <h1 style={container.name_h1}>{this.state.lName + ", " + this.state.fName}</h1>
+                                    <span style={container.desc.span}> PASSENGER</span>
                                 </div>
                                 <div style={container.seats}>
-                                    <h3>Seats:</h3>
+                                    <h3>Seats: {this.state.seats}</h3>
                                 </div>
                             </div>
-                            <i style={container.i} className="fas fa-barcode"></i>
+                            {/* <i style={container.i} className="fas fa-barcode"></i> */}
+                            <h2>{this.state.busNumber}</h2>
                             <span style={container.info}>Thank you for using LINKOD</span>
                         </div>
                     </div>

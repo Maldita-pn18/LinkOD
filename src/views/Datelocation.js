@@ -33,9 +33,17 @@ export default class DateLocation extends Component {
             time: "",
             displayTime: Date.now(),
             from: "",
-            fromRequire: 'Starting Location',
+            child_fare:100,
+            adult_fare:150,
+            availableSeat:[1,2,3,4],
             to: "",
+            busNumber: "69014NY",
+            bus: "Silver Star",
+            duration:"1 hr",
+            departureTime:"8:30 am",
+            arrivalTime:"9:30 pm",
             toRequired: 'Destination',
+            fromRequire: 'Starting Location',
             toTickets: false,
             toRequiredColor: null,
             fromRequiredColor: null
@@ -72,6 +80,7 @@ export default class DateLocation extends Component {
         this.setState({ time: time })
 
     }
+
     checkCredential = () => {
         if (this.state.from !== "" && this.state.to !== "" && this.state.date !== "") {
             this.setState({ toTickets: true });
@@ -106,7 +115,15 @@ export default class DateLocation extends Component {
                     journeyTo: this.state.to,
                     journeyFrom: this.state.from,
                     petsa: this.state.date,
-                    departureTime: this.state.time
+                    departureTime: this.state.time,
+                    child_fare:this.state.child_fare,
+                    adult_fare:this.state.adult_fare,
+                    busNumber:this.state.busNumber,
+                    availableSeat:this.state.availableSeat,
+                    duration:this.state.duration,
+                    bus: this.state.bus,
+                    departureTime:this.state.departureTime,
+                    arrivalTime:this.state.arrivalTime,
                 }
             }} />
         }

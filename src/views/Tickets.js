@@ -32,6 +32,7 @@ export default class DateLocation extends Component {
         super(props);
         this.state = {
             bus: "",
+            busNumber: "",
             availableSeat: "",
             departureTime: "",
             arrivalTime: "",
@@ -41,6 +42,9 @@ export default class DateLocation extends Component {
             journeyTo: "",
             journeyFrom: "",
             petsa: "",
+            child_fare:"",
+            adult_fare:"",
+            seats: "[3,1]",
             toCheckout: false
         }
     }
@@ -60,16 +64,20 @@ export default class DateLocation extends Component {
                 return <Redirect to={{
                     pathname: "/checkout",
                     state: {
-                        Bus: this.state.bus,
-                        AvailableSeat: this.state.availableSeat,
-                        DepartureTime: this.state.departureTime,
-                        ArrivalTime: this.arrivalTime,
-                        Duration: this.state.duration,
-                        Adult: this.adult,
-                        Child: this.child,
-                        JourneyTo: this.journeyTo,
-                        JourneyFrom: this.journeyFrom,
-                        Petsa: this.petsa
+                        petsa: this.state.petsa,
+                        departureTime: this.state.departureTime,
+                        arrivalTime: this.state.arrivalTime,
+                        duration: this.state.duration,
+                        adult: this.state.adult,
+                        child: this.state.child,
+                        journeyTo: this.state.journeyTo,
+                        journeyFrom: this.state.journeyFrom,
+                        petsa: this.state.petsa,
+                        child_fare:this.state.child_fare,
+                        adult_fare:this.state.adult_fare,
+                        busNumber: this.state.busNumber,
+                        seats:JSON.stringify(this.state.seats),
+                        bus: this.state.bus,
                     }
                 }} />
             }
@@ -81,7 +89,14 @@ export default class DateLocation extends Component {
             journeyTo: this.props.location.state.journeyTo,
             journeyFrom: this.props.location.state.journeyFrom,
             petsa: this.props.location.state.petsa,
-            departureTime: this.props.location.state.departureTime
+            departureTime: this.props.location.state.departureTime,
+            arrivalTime: this.props.location.state.arrivalTime,
+            duration:this.props.location.state.duration,
+            child_fare:this.props.location.state.child_fare,
+            adult_fare:this.props.location.state.adult_fare,
+            availableSeat:this.props.location.state.availableSeat,
+            busNumber:this.props.location.state.busNumber,
+            bus:this.props.location.state.bus,
         });
     }
 

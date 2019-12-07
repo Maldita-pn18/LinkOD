@@ -37,23 +37,21 @@ export default class Checkout extends Component {
             formValid: false,
             errorCount: null,
             toConfirm: false,
-            date:"",
-            depart_from:"",
-            arrive_to:"",
-            departure_time:"",
-            arrive_time:"",
-            adult_fair:"",
-            adult_passenger:"",
-            child_fair:"",
-            child_passenger:"",
-            seats:"",
-            bus:"",
+            bus: "",
             busNumber:"",
-            bill:"",
+            departureTime: "",
+            arrivalTime: "",
+            duration: "",
+            adult: "",
+            child: "",
+            journeyTo: "",
+            journeyFrom: "",
+            petsa: "",
             fName: "",
             lName: "",
             email: "",
             phone: "",
+            seats:"",
             paymentMethod: "cash",
             errors: {
                 firstName: '',
@@ -65,29 +63,20 @@ export default class Checkout extends Component {
     }
 
     componentDidMount(){
-        // Bus: this.state.bus,
-        // AvailableSeat: this.state.availableSeat,
-        // DepartureTime: this.state.departureTime,
-        // ArrivalTime: this.arrivalTime,
-        // Duration: this.state.duration,
-        // Adult: this.adult,
-        // Child: this.child,
-        // JourneyTo: this.journeyTo,
-        // JourneyFrom: this.journeyFrom,
-        // Petsa: this.petsa
         this.setState({
-            date: this.props.location.state.Date,
-            depart_from: this.props.location.state.JourneyFrom,
-            arrive_to: this.props.location.state.JourneyTo,
-            departure_time: this.props.location.state.DepartureTime,
-            arrive_time: this.props.location.state.JourneyFrom,
-            adult_fair: "",
-            adult_passenger: this.props.location.state.Adult,
-            child_fair: "",
-            child_passenger: this.props.location.state.Child,
-            seats: this.props.location.state.AvailableSeat,
-            bus: this.props.location.state.Bus,
-            busNumber: "",
+            petsa:this.props.location.state.petsa,
+            bus: this.props.location.state.bus,
+            journeyFrom: this.props.location.state.journeyFrom,
+            journeyTo: this.props.location.state.journeyTo,
+            departureTime: this.props.location.state.departureTime,
+            arrivalTime: this.props.location.state.arrivalTime,
+            adult_fare: this.props.location.state.adult_fare,
+            child_fare:this.props.location.state.child_fare,
+            child: this.props.location.state.child,
+            adult : this.props.location.state.adult,
+            bus: this.props.location.state.bus,
+            busNumber:this.props.location.state.busNumber,
+            seats:this.props.location.state.seats,
         })
     }
 
@@ -216,11 +205,11 @@ export default class Checkout extends Component {
                                                     Journey
                                                 </Typography>
 
-                                                <p><b>Date:</b>&nbsp;{this.state.date}</p>
-                                                <p><b>Depart from:</b> &nbsp;{this.state.depart_from + " / " + this.state.departure_time}</p>
-                                                <p><b> Arrive to: </b> &nbsp;{this.state.arrive_to + " / " + this.state.arrive_time}</p>
-                                                <p><b>Bus: {this.state.bus}</b></p>
-                                                <p><b>Bus Number: {this.state.busNumber}</b></p>
+                                                <p><b>Date:</b>&nbsp;{this.state.petsa}</p>
+                                                <p><b>Depart from:</b> &nbsp;{this.state.journeyFrom + " / " + this.state.departureTime}</p>
+                                                <p><b> Arrive to: </b> &nbsp;{this.state.journeyTo + " / " + this.state.arrivalTime}</p>
+                                                <p><b>Bus: </b>{this.state.bus}</p>
+                                                <p><b>Bus Number:</b> {this.state.busNumber}</p>
                                             </CardContent>
                                         </CardActionArea>
                                     </Card>
@@ -233,8 +222,8 @@ export default class Checkout extends Component {
                                                     Tickets
                                                 </Typography>
 
-                                                <p><b>Adult:</b> &nbsp;{this.state.adult_passenger + " x " + this.state.adult_fair}</p>
-                                                <p><b>SP:</b> &nbsp;{this.state.child_passenger + " x " + this.state.child_fair}</p>
+                                                <p><b>Adult:</b> &nbsp;{this.state.adult + " x " + this.state.adult_fare}</p>
+                                                <p><b>SP:</b> &nbsp;{this.state.child+ " x " + this.state.child_fare}</p>
                                                 <p><b>Seats:</b> &nbsp; {this.state.seats}</p>
                                             </CardContent>
                                         </CardActionArea>
@@ -282,10 +271,7 @@ export default class Checkout extends Component {
                                             </div>
                                             <div className='pay'>
                                                 <p>Payment Method:<b>CASH</b></p>
-                                                <Typography gutterBottom variant="h6" component="h6">
-                                                    &nbsp;&nbsp;Price:
                                                 <hr style={{ width: '96%' }}></hr>
-                                                </Typography>
                                             </div>
                                         </form>
                                     </Grid>
@@ -308,14 +294,29 @@ export default class Checkout extends Component {
 
     confirm() {
         if (this.state.toConfirm) {
+            console.log(this.state.seats)
             return <Redirect to={{
                 pathname: "/confirm",
                 state: {
-                    confirmFname: this.state.fName,
-                    confirmLname: this.state.lName,
-                    confirmGmail: this.state.email,
-                    confirmCp: this.state.phone,
-                    confirmPay: this.state.paymentMethod
+                    fName: this.state.fName,
+                    lName: this.state.lName,
+                    email: this.state.email,
+                    phone: this.state.phone,
+                    paymentMethod: this.state.paymentMethod,
+                    petsa: this.state.petsa,
+                    departureTime: this.state.departureTime,
+                    arrivalTime: this.state.arrivalTime,
+                    duration: this.state.duration,
+                    adult: this.state.adult,
+                    child: this.state.child,
+                    journeyTo: this.state.journeyTo,
+                    journeyFrom: this.state.journeyFrom,
+                    petsa: this.state.petsa,
+                    child_fare:this.state.child_fare,
+                    adult_fare:this.state.adult_fare,
+                    busNumber: this.state.busNumber,
+                    seats:this.state.seats,
+                    bus: this.state.bus,
                 }
             }} />
         }

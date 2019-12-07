@@ -19,21 +19,6 @@ export default class Navigation extends Component {
             // confirm: ""
         }
     }
-    dateLocation = () => {
-        ReactDOM.render(<DateLocation />, document.getElementById('root'));
-    }
-    tickets = () => {
-        ReactDOM.render(<Tickets />, document.getElementById('root'));
-
-    }
-    checkOut =()=>{
-        ReactDOM.render(<Checkout/>, document.getElementById('root'));
-
-    }
-    confirm =() =>{
-        ReactDOM.render(<Confirm/>, document.getElementById('root'));
-
-    }
     
     render() {
         return (
@@ -61,10 +46,10 @@ export default class Navigation extends Component {
                 <AppBar position="static" style={{ backgroundColor: '#0269e8' }}>
                     <Toolbar>
                         <ButtonGroup style={{ height: '30px' }} variant="text" aria-label="outlined contained primary button group">
-                            <Button onClick={this.dateLocation} style={{ color: "white" }}>Date & Location</Button>
-                            <Button onClick={this.tickets} style={{ color: "white" }} >Tickets</Button>
-                            <Button onClick={this.checkOut} style={{ color: "white" }}>CheckOut</Button>
-                            <Button onClick={this.confirm} style={{ color: "white" }}>Confirm</Button>
+                            <Button onClick={this.dateLocation} style={{ color: "white" }} disabled>Date & Location</Button>
+                            <Button onClick={this.tickets} style={{ color: "white" }} disabled>Tickets</Button>
+                            <Button onClick={this.checkOut} style={{ color: "white" }} disabled>CheckOut</Button>
+                            <Button onClick={this.confirm} style={{ color: "white" }} disabled>SAVE</Button>
                         </ButtonGroup>
                     </Toolbar>
                 </AppBar>
