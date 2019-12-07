@@ -38,13 +38,15 @@ export default class DateLocation extends Component {
             arrivalTime: "",
             duration: "",
             adult: "",
+            time: "",
             child: "",
             journeyTo: "",
             journeyFrom: "",
             petsa: "",
-            child_fare:"",
-            adult_fare:"",
+            child_fare: "",
+            adult_fare: "",
             seats: "[3,1]",
+            availableBus: "",
             toCheckout: false
         }
     }
@@ -73,10 +75,10 @@ export default class DateLocation extends Component {
                         journeyTo: this.state.journeyTo,
                         journeyFrom: this.state.journeyFrom,
                         petsa: this.state.petsa,
-                        child_fare:this.state.child_fare,
-                        adult_fare:this.state.adult_fare,
+                        child_fare: this.state.child_fare,
+                        adult_fare: this.state.adult_fare,
                         busNumber: this.state.busNumber,
-                        seats:JSON.stringify(this.state.seats),
+                        seats: JSON.stringify(this.state.seats),
                         bus: this.state.bus,
                     }
                 }} />
@@ -84,22 +86,16 @@ export default class DateLocation extends Component {
         }
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.setState({
             journeyTo: this.props.location.state.journeyTo,
             journeyFrom: this.props.location.state.journeyFrom,
             petsa: this.props.location.state.petsa,
-            departureTime: this.props.location.state.departureTime,
-            arrivalTime: this.props.location.state.arrivalTime,
-            duration:this.props.location.state.duration,
-            child_fare:this.props.location.state.child_fare,
-            adult_fare:this.props.location.state.adult_fare,
-            availableSeat:this.props.location.state.availableSeat,
-            busNumber:this.props.location.state.busNumber,
-            bus:this.props.location.state.bus,
+            time: this.props.location.state.time,
+            availableBus:this.props.location.state.availableBus,
         });
+        
     }
-
     render() {
         return (
             <div>
@@ -138,9 +134,9 @@ export default class DateLocation extends Component {
                     }}
                 >
                     <option value="" />
-                    <option value={10}>Ten</option>
-                    <option value={20}>Twenty</option>
-                    <option value={30}>Thirty</option>
+                    <option value={1}>one</option>
+                    <option value={2}>two</option>
+                    <option value={3}>three</option>
                 </Select>
                 {/* <FormHelperText>Required</FormHelperText> */}
             </FormControl>
@@ -175,9 +171,9 @@ export default class DateLocation extends Component {
                     }}
                 >
                     <option value="" />
-                    <option value={10}>Ten</option>
-                    <option value={20}>Twenty</option>
-                    <option value={30}>Thirty</option>
+                    <option value={1}>one</option>
+                    <option value={2}>two</option>
+                    <option value={3}>three</option>
                 </Select>
                 {/* <FormHelperText>Required</FormHelperText> */}
             </FormControl>
@@ -185,6 +181,7 @@ export default class DateLocation extends Component {
     }
 
     tickets() {
+        console.log("testing..", this.state.availableBus)
         let key = 0;
         const StyledTableCell = withStyles(theme => ({
             head: {
@@ -208,13 +205,25 @@ export default class DateLocation extends Component {
             return { bus, availableSeat, departureTime, arrivalTime, duration };
         }
 
-        const rows = [
-            createData('', <div>{this.Adult()}&nbsp;&nbsp;&nbsp;&nbsp;{this.child()}<h6 align="left">Child Price: </h6><h6 align="left">Adult Price: </h6></div>, '', ' ', ' '),
-            createData('', '', '', ' ', ' '),
-            createData('', '', '', ' ', ' '),
-            createData('', '', '', ' ', ' '),
-            createData('', '', '', ' ', ' '),
-        ];
+        let rows = [];
+
+        function busInfo(bus, Adult, Child) {
+            for (var i = 0; i < bus.length; ++i) {
+                rows.push(createData(
+                    bus[i].busName,
+                    <div>
+                        {Adult}&nbsp;&nbsp;&nbsp;&nbsp;{Child}
+                        <p align="left">Child Price:&nbsp;&nbsp;&nbsp;{bus[i].fare.child}</p>
+                        <p align="left">Adult Price:&nbsp;&nbsp;&nbsp;{bus[i].fare.adult}</p>
+                    </div>,
+                    bus[i].startTime,
+                    bus[i].endTime,
+                    bus[i].duration
+                ))
+            }
+        }
+
+        busInfo(this.state.availableBus, this.Adult(), this.child())
 
         const classes = makeStyles(theme => ({
             root: {
@@ -242,6 +251,7 @@ export default class DateLocation extends Component {
         }));
         return (
             <div className={classes.root}>
+                <p>{this.state.buses}</p>
                 <Header />
                 <Grid container spacing={3} justify="center" style={{ marginTop: '7%' }}>
                     <Grid item xs={8}>
@@ -249,15 +259,9 @@ export default class DateLocation extends Component {
                         <Paper className={classes.paper}>
                             <Card>
                                 <CardContent>
-                                    <Typography gutterBottom variant="h6" component="h6">
-                                        Journey from <span style={{ color: '#3b81b3' }}><b>{this.state.journeyFrom}</b></span> to <span style={{ color: '#3b81b3' }}><b>{this.state.journeyTo}</b></span>
-                                    </Typography>
-                                    <Typography gutterBottom variant="h6" component="h6">
-                                        Date of Departure: <span style={{ color: '#3b81b3' }}><b>{this.state.petsa}</b></span>
-                                    </Typography>
-                                    <Typography gutterBottom variant="h6" component="h6">
-                                        Departure Time: <span style={{ color: '#3b81b3' }}><b>{this.state.departureTime}</b></span>
-                                    </Typography>
+                                    <p> Journey from <span style={{ color: '#3b81b3' }}><b>{this.state.journeyFrom}</b></span> to <span style={{ color: '#3b81b3' }}><b>{this.state.journeyTo}</b></span></p>
+                                    <p>Date of Departure: <span style={{ color: '#3b81b3' }}><b>{this.state.petsa}</b></span></p>
+                                    <p> Departure Time: <span style={{ color: '#3b81b3' }}><b>{this.state.time}</b></span></p>
                                     <Table className={classes.table} aria-label="customized table">
                                         <TableHead>
                                             <TableRow>
@@ -266,6 +270,7 @@ export default class DateLocation extends Component {
                                                 <StyledTableCell align="center">Departure Time</StyledTableCell>
                                                 <StyledTableCell align="center">Arrival Time</StyledTableCell>
                                                 <StyledTableCell align="center">Duration</StyledTableCell>
+                                                <StyledTableCell align="center">Action</StyledTableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
@@ -284,9 +289,7 @@ export default class DateLocation extends Component {
                                     </Table>
                                 </CardContent>
                                 <CardActions>
-                                    <Typography gutterBottom variant="h6" component="h6">
-                                        &nbsp;&nbsp;Price:
-                                                </Typography>
+                                    <p>&nbsp;&nbsp;Price:</p>
                                     <Grid container justify='flex-end'>
                                         <Button size="small" color="primary" type="submit" onClick={this.validation} >Checkout</Button>
                                         <Grid container justify='flex-end'>
