@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from "react-router-dom";
 
 
 
@@ -28,6 +29,7 @@ export default class Final extends Component {
             journeyFrom: "",
             petsa: "",
             Bill: "",
+            stageChecker: false,
         }
     }
 
@@ -35,31 +37,41 @@ export default class Final extends Component {
         return (
             <div>
                 {this.tickets()}
+                {this.routes()}
             </div>
         )
     }
     componentDidMount() {
-        this.setState({
-            fName: this.props.location.state.fName,
-            lName: this.props.location.state.lName,
-            email: this.props.location.state.email,
-            phone: this.props.location.state.phone,
-            paymentMethod: this.props.location.state.paymentMethod,
-            petsa: this.props.location.state.petsa,
-            bus: this.props.location.state.bus,
-            journeyFrom: this.props.location.state.journeyFrom,
-            journeyTo: this.props.location.state.journeyTo,
-            departureTime: this.props.location.state.departureTime,
-            arrivalTime: this.props.location.state.arrivalTime,
-            adult_fare: this.props.location.state.adult_fare,
-            child_fare: this.props.location.state.child_fare,
-            child: this.props.location.state.child,
-            adult: this.props.location.state.adult,
-            bus: this.props.location.state.bus,
-            busNumber: this.props.location.state.busNumber,
-            seats: this.props.location.state.seats,
-            Bill: this.props.location.state.Bill
-        });
+        if (localStorage.getItem("stage") === "five") {
+            this.setState({
+                fName: this.props.location.state.fName,
+                lName: this.props.location.state.lName,
+                email: this.props.location.state.email,
+                phone: this.props.location.state.phone,
+                paymentMethod: this.props.location.state.paymentMethod,
+                petsa: this.props.location.state.petsa,
+                bus: this.props.location.state.bus,
+                journeyFrom: this.props.location.state.journeyFrom,
+                journeyTo: this.props.location.state.journeyTo,
+                departureTime: this.props.location.state.departureTime,
+                arrivalTime: this.props.location.state.arrivalTime,
+                adult_fare: this.props.location.state.adult_fare,
+                child_fare: this.props.location.state.child_fare,
+                child: this.props.location.state.child,
+                adult: this.props.location.state.adult,
+                bus: this.props.location.state.bus,
+                busNumber: this.props.location.state.busNumber,
+                seats: this.props.location.state.seats,
+                Bill: this.props.location.state.Bill
+            });
+        } else {
+            this.setState({ stageChecker: true })
+        }
+    }
+    routes = () => {
+        if (this.state.stageChecker) {
+            return <Redirect to={{ pathname: "/" }} />
+        }
     }
 
     tickets() {

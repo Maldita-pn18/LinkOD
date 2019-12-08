@@ -9,8 +9,6 @@ import Navigation from '../components/navigationBar';
 import Typography from '@material-ui/core/Typography';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { Redirect } from "react-router-dom";
-import ReactDOM from 'react-dom';
-import Tickets from '../views/Tickets'
 import Button from '@material-ui/core/Button';
 
 const validateForm = (errors) => {
@@ -38,7 +36,7 @@ export default class Checkout extends Component {
             errorCount: null,
             toConfirm: false,
             bus: "",
-            busNumber:"",
+            busNumber: "",
             departureTime: "",
             arrivalTime: "",
             duration: "",
@@ -51,33 +49,43 @@ export default class Checkout extends Component {
             lName: "",
             email: "",
             phone: "",
-            seats:"",
+            seats: "",
+            oras: "",
+            busInformation: "",
             paymentMethod: "cash",
             errors: {
                 firstName: '',
                 lastName: '',
                 email: '',
                 phone: '',
-            }
+            },
+            stageChecker: false,
+            toPrevious: false,
         };
     }
 
-    componentDidMount(){
-        this.setState({
-            petsa:this.props.location.state.petsa,
-            bus: this.props.location.state.bus,
-            journeyFrom: this.props.location.state.journeyFrom,
-            journeyTo: this.props.location.state.journeyTo,
-            departureTime: this.props.location.state.departureTime,
-            arrivalTime: this.props.location.state.arrivalTime,
-            adult_fare: this.props.location.state.adult_fare,
-            child_fare:this.props.location.state.child_fare,
-            child: this.props.location.state.child,
-            adult : this.props.location.state.adult,
-            bus: this.props.location.state.bus,
-            busNumber:this.props.location.state.busNumber,
-            seats:this.props.location.state.seats,
-        })
+    componentDidMount() {
+        if (localStorage.getItem("stage") === "three") {
+            this.setState({
+                petsa: this.props.location.state.petsa,
+                bus: this.props.location.state.bus,
+                journeyFrom: this.props.location.state.journeyFrom,
+                journeyTo: this.props.location.state.journeyTo,
+                departureTime: this.props.location.state.departureTime,
+                arrivalTime: this.props.location.state.arrivalTime,
+                adult_fare: this.props.location.state.adult_fare,
+                child_fare: this.props.location.state.child_fare,
+                child: this.props.location.state.child,
+                adult: this.props.location.state.adult,
+                bus: this.props.location.state.bus,
+                busNumber: this.props.location.state.busNumber,
+                seats: this.props.location.state.seats,
+                oras: this.props.location.state.oras,
+                busInformation: this.props.location.state.busInformation
+            })
+        } else {
+            this.setState({ stageChecker: true })
+        }
     }
 
     handleChange = (event) => {
@@ -105,7 +113,7 @@ export default class Checkout extends Component {
             case 'email':
                 const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
                 if (!validEmailRegex.test(value)) {
-                    errors.email = 'Invalid email'
+                    errors.email = "Invalid email"
                 } else {
                     errors.email = ""
                     this.setState({ email: value });
@@ -123,8 +131,29 @@ export default class Checkout extends Component {
         }
         this.setState({ errors, [name]: value });
     }
-    handleBack() {
-        //ReactDOM.render(<Tickets />, document.getElementById('root'));
+    handleBack = () => {
+        this.setState({ toPrevious: true })
+        localStorage.setItem("stage", "two")
+    }
+
+    routes = () => {
+        if (this.state.stageChecker) {
+            return <Redirect to={{ pathname: '/' }} />
+        }
+    }
+    toPrevious = () => {
+        if (this.state.toPrevious) {
+            return <Redirect to={{
+                pathname: '/Tickets',
+                state: {
+                    time: this.state.oras,
+                    petsa: this.state.petsa,
+                    availableBus: this.state.busInformation,
+                    journeyTo: this.state.journeyTo,
+                    journeyFrom: this.state.journeyFrom,
+                }
+            }} />
+        }
     }
 
 
@@ -144,6 +173,7 @@ export default class Checkout extends Component {
         }
         if (this.state.fName !== "" && this.state.lName !== "" && this.state.email !== "" && this.state.phone !== "") {
             event.preventDefault();
+            localStorage.setItem("stage", "four");
             this.setState({
                 formValid: validateForm(this.state.errors),
                 errorCount: countErrors(this.state.errors),
@@ -157,11 +187,10 @@ export default class Checkout extends Component {
                 'errors.phone': 'This field is required! '
             });
         }
-
     }
 
     checkout() {
-        const { errors, formValid } = this.state;
+        const { errors } = this.state;
         const classes = makeStyles(theme => ({
             root: {
                 flexGrow: 1,
@@ -223,7 +252,7 @@ export default class Checkout extends Component {
                                                 </Typography>
 
                                                 <p><b>Adult:</b> &nbsp;{this.state.adult + " x " + this.state.adult_fare}</p>
-                                                <p><b>SP:</b> &nbsp;{this.state.child+ " x " + this.state.child_fare}</p>
+                                                <p><b>SP:</b> &nbsp;{this.state.child + " x " + this.state.child_fare}</p>
                                                 <p><b>Seats:</b> &nbsp; {this.state.seats}</p>
                                             </CardContent>
                                         </CardActionArea>
@@ -237,7 +266,7 @@ export default class Checkout extends Component {
                                                     Payment
                                                 </Typography>
 
-                                                <p>  <b>Tickets Total:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"₱ " + eval(this.state.adult_fare*this.state.adult+this.state.child_fare*this.state.child) +".00"}</p>
+                                                <p>  <b>Tickets Total:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"₱ " + eval(this.state.adult_fare * this.state.adult + this.state.child_fare * this.state.child) + ".00"}</p>
                                             </CardContent>
                                         </CardActionArea>
                                     </Card>
@@ -312,10 +341,10 @@ export default class Checkout extends Component {
                     journeyTo: this.state.journeyTo,
                     journeyFrom: this.state.journeyFrom,
                     petsa: this.state.petsa,
-                    child_fare:this.state.child_fare,
-                    adult_fare:this.state.adult_fare,
+                    child_fare: this.state.child_fare,
+                    adult_fare: this.state.adult_fare,
                     busNumber: this.state.busNumber,
-                    seats:this.state.seats,
+                    seats: this.state.seats,
                     bus: this.state.bus,
                 }
             }} />
@@ -327,6 +356,8 @@ export default class Checkout extends Component {
             <div>
                 {this.checkout()}
                 {this.confirm()}
+                {this.routes()}
+                {this.toPrevious()}
             </div>
         )
     }

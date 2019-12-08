@@ -4,11 +4,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import ReactDOM from 'react-dom';
-import DateLocation from '../views/Datelocation';
-import Tickets from '../views/Tickets';
-import Checkout from '../views/Checkout';
-import Confirm from '../views/Confirm';
 export default class Navigation extends Component {
     constructor(props) {
         super(props);

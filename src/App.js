@@ -6,7 +6,7 @@ import Tickets from './views/Tickets';
 import Checkout from './views/Checkout';
 import Confirm from './views/Confirm';
 import Final from './views/Final';
-import { BrowserRouter, Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 function App() {
   return (

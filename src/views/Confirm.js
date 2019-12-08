@@ -42,18 +42,11 @@ export default class Confirm extends Component {
             petsa: "",
             toFinal: false,
             confirm: "Save",
-            bill: 0
+            bill: 0,
+            stageChecker: false
         }
     }
-    // toTicket = () => {
-    //     ReactDOM.render(<Final/>, document.getElementById('root'));
 
-    // }
-
-    // toStartOver = () => {
-    //     ReactDOM.render(<Datelocation />, document.getElementById('root'));
-
-    // }
     save = (data) => {
         return new Promise((resolve, reject) => {
             axios.post('http://localhost:4000/ticket/book', data)
@@ -69,9 +62,9 @@ export default class Confirm extends Component {
         if (this.state.book === "") {
             this.setState({ book: "Your booking is saved.", confirm: "View Ticket" });
             let seat = this.state.seats.split(",")
-            
+
             for (var i = 0; i < seat.length; ++i) {
-                var num = seat[i].replace('"','')                
+                var num = seat[i].replace('"', '')
                 let data = {
                     date: this.state.petsa,
                     from: this.state.journeyFrom,
@@ -85,39 +78,49 @@ export default class Confirm extends Component {
                     lastname: this.state.lName,
                     bill: Number(this.state.bill)
                 }
-                this.save(data).then(res=>{
+                this.save(data).then(res => {
                     console.log(res)
                 })
             }
         }
         if (this.state.book !== "") {
+            localStorage.setItem("stage","five")
             this.setState({ toFinal: true });
         }
     }
-
     componentDidMount() {
-        this.setState({
-            fName: this.props.location.state.fName,
-            lName: this.props.location.state.lName,
-            email: this.props.location.state.email,
-            phone: this.props.location.state.phone,
-            paymentMethod: this.props.location.state.paymentMethod,
-            petsa: this.props.location.state.petsa,
-            bus: this.props.location.state.bus,
-            journeyFrom: this.props.location.state.journeyFrom,
-            journeyTo: this.props.location.state.journeyTo,
-            departureTime: this.props.location.state.departureTime,
-            arrivalTime: this.props.location.state.arrivalTime,
-            adult_fare: this.props.location.state.adult_fare,
-            child_fare: this.props.location.state.child_fare,
-            child: this.props.location.state.child,
-            adult: this.props.location.state.adult,
-            bus: this.props.location.state.bus,
-            busNumber: this.props.location.state.busNumber,
-            seats: this.props.location.state.seats,
-            bill: eval(this.props.location.state.adult * this.props.location.state.adult_fare + this.props.location.state.child_fare * this.props.location.state.child)
-        });
+        if (localStorage.getItem("stage") === 'four') {
+            this.setState({
+                fName: this.props.location.state.fName,
+                lName: this.props.location.state.lName,
+                email: this.props.location.state.email,
+                phone: this.props.location.state.phone,
+                paymentMethod: this.props.location.state.paymentMethod,
+                petsa: this.props.location.state.petsa,
+                bus: this.props.location.state.bus,
+                journeyFrom: this.props.location.state.journeyFrom,
+                journeyTo: this.props.location.state.journeyTo,
+                departureTime: this.props.location.state.departureTime,
+                arrivalTime: this.props.location.state.arrivalTime,
+                adult_fare: this.props.location.state.adult_fare,
+                child_fare: this.props.location.state.child_fare,
+                child: this.props.location.state.child,
+                adult: this.props.location.state.adult,
+                bus: this.props.location.state.bus,
+                busNumber: this.props.location.state.busNumber,
+                seats: this.props.location.state.seats,
+                bill: eval(this.props.location.state.adult * this.props.location.state.adult_fare + this.props.location.state.child_fare * this.props.location.state.child)
+            });
+        }else{
+            this.setState({stageChecker:true})
+        }
     }
+    routes = () =>{
+        if(this.state.stageChecker){
+            return <Redirect to={{pathname:'/'}}/>
+        }
+    }
+
     final() {
         if (this.state.toFinal) {
             return <Redirect to={{
@@ -153,13 +156,12 @@ export default class Confirm extends Component {
             <div>
                 {this.tickets()}
                 {this.final()}
+                {this.routes()}
             </div>
         )
     }
 
     tickets() {
-
-
         const classes = makeStyles(theme => ({
             root: {
                 flexGrow: 1,

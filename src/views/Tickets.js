@@ -46,59 +46,70 @@ export default class DateLocation extends Component {
             seats: [],
             availableBus: "",
             toCheckout: false,
+            stageChecker: false
         }
     }
 
     validation = () => {
-        if (this.state.adult === "" && this.state.child === "") {
-            alert("Input fields")
+        if (this.state.adult === 0 && this.state.child === 0) {
+            swal("Oops","Fields that are required should be filled!","error")
         } else {
             this.setState({ toCheckout: true })
-            // ReactDOM.render(<Checkout />, document.getElementById('root'));
         }
     };
 
     checkout = () => {
         if (this.state.toCheckout) {
-            if (this.state.toCheckout) {
+            localStorage.setItem("stage","three")
+            return <Redirect to={{
+                pathname: "/checkout",
+                state: {
+                    petsa: this.state.petsa,
+                    departureTime: this.state.departureTime,
+                    arrivalTime: this.state.arrivalTime,
+                    duration: this.state.duration,
+                    adult: this.state.adult,
+                    child: this.state.child,
+                    journeyTo: this.state.journeyTo,
+                    journeyFrom: this.state.journeyFrom,
+                    petsa: this.state.petsa,
+                    child_fare: this.state.child_fare,
+                    adult_fare: this.state.adult_fare,
+                    busNumber: this.state.busNumber,
+                    seats: JSON.stringify(this.state.seats),
+                    bus: this.state.bus,
+                    oras:this.state.time,
+                    busInformation: this.state.availableBus,
+                }
+            }} />
+        }
+    }
 
-                return <Redirect to={{
-                    pathname: "/checkout",
-                    state: {
-                        petsa: this.state.petsa,
-                        departureTime: this.state.departureTime,
-                        arrivalTime: this.state.arrivalTime,
-                        duration: this.state.duration,
-                        adult: this.state.adult,
-                        child: this.state.child,
-                        journeyTo: this.state.journeyTo,
-                        journeyFrom: this.state.journeyFrom,
-                        petsa: this.state.petsa,
-                        child_fare: this.state.child_fare,
-                        adult_fare: this.state.adult_fare,
-                        busNumber: this.state.busNumber,
-                        seats: JSON.stringify(this.state.seats),
-                        bus: this.state.bus,
-                    }
-                }} />
-            }
+    routing = () => {
+        if (this.state.stageChecker) {
+            return <Redirect to={{ pathname: "/" }} />
         }
     }
 
     componentWillMount() {
-        this.setState({
-            journeyTo: this.props.location.state.journeyTo,
-            journeyFrom: this.props.location.state.journeyFrom,
-            petsa: this.props.location.state.petsa,
-            time: this.props.location.state.time,
-            availableBus: this.props.location.state.availableBus,
-        });
+        if (localStorage.getItem("stage") === 'two') {
+            this.setState({
+                journeyTo: this.props.location.state.journeyTo,
+                journeyFrom: this.props.location.state.journeyFrom,
+                petsa: this.props.location.state.petsa,
+                time: this.props.location.state.time,
+                availableBus: this.props.location.state.availableBus,
+            });
+        } else {
+            this.setState({ stageChecker: true })
+        }
     }
     render() {
         return (
             <div>
                 {this.tickets()}
                 {this.checkout()}
+                {this.routing()}
             </div>
         )
     }
@@ -149,15 +160,7 @@ export default class DateLocation extends Component {
     }
 
     child() {
-        const classes = makeStyles(theme => ({
-            formControl: {
-                margin: theme.spacing(1),
-                minWidth: 120,
-            },
-            selectEmpty: {
-                marginTop: theme.spacing(2),
-            },
-        }));
+
 
         const handleChange = name => event => {
             this.setState({

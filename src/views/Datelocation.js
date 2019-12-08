@@ -45,6 +45,7 @@ export default class DateLocation extends Component {
         }
     }
     componentDidMount() {
+        localStorage.setItem("stage","one")
         let months = {
             '0': 'January',
             '1': 'February',
@@ -127,6 +128,7 @@ export default class DateLocation extends Component {
 
     ticketRedirect() {
         if (this.state.toTickets) {
+            localStorage.setItem("stage","two")
             return <Redirect to={{
                 pathname: "/Tickets",
                 state: {
