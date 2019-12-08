@@ -11,9 +11,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import ReactDOM from 'react-dom';
-import Datelocation from '../views/Datelocation';
-import Final from '../views/Final'
+import axios from "axios";
 import { Redirect } from "react-router-dom";
 
 
@@ -43,7 +41,8 @@ export default class Confirm extends Component {
             journeyFrom: "",
             petsa: "",
             toFinal: false,
-            confirm: "Save"
+            confirm: "Save",
+            bill: 0
         }
     }
     // toTicket = () => {
@@ -55,12 +54,44 @@ export default class Confirm extends Component {
     //     ReactDOM.render(<Datelocation />, document.getElementById('root'));
 
     // }
+    save = (data) => {
+        return new Promise((resolve, reject) => {
+            axios.post('http://localhost:4000/ticket/book', data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    }
     confirm = () => {
         if (this.state.book === "") {
-            this.setState({ book: "Your booking is saved.", confirm: "View Ticket"});
+            this.setState({ book: "Your booking is saved.", confirm: "View Ticket" });
+            let seat = this.state.seats.split(",")
+            
+            for (var i = 0; i < seat.length; ++i) {
+                var num = seat[i].replace('"','')                
+                let data = {
+                    date: this.state.petsa,
+                    from: this.state.journeyFrom,
+                    to: this.state.journeyTo,
+                    bus: this.state.bus,
+                    busNumber: this.state.busNumber,
+                    seats: Number(num.trim()),
+                    departureTime: this.state.departureTime,
+                    arrivalTime: this.state.arrivalTime,
+                    firstname: this.state.fName,
+                    lastname: this.state.lName,
+                    bill: Number(this.state.bill)
+                }
+                this.save(data).then(res=>{
+                    console.log(res)
+                })
+            }
         }
-        if(this.state.book !== ""){
-            this.setState({toFinal:true});
+        if (this.state.book !== "") {
+            this.setState({ toFinal: true });
         }
     }
 
@@ -84,6 +115,7 @@ export default class Confirm extends Component {
             bus: this.props.location.state.bus,
             busNumber: this.props.location.state.busNumber,
             seats: this.props.location.state.seats,
+            bill: eval(this.props.location.state.adult * this.props.location.state.adult_fare + this.props.location.state.child_fare * this.props.location.state.child)
         });
     }
     final() {
@@ -105,11 +137,12 @@ export default class Confirm extends Component {
                     journeyTo: this.state.journeyTo,
                     journeyFrom: this.state.journeyFrom,
                     petsa: this.state.petsa,
-                    child_fare:this.state.child_fare,
-                    adult_fare:this.state.adult_fare,
+                    child_fare: this.state.child_fare,
+                    adult_fare: this.state.adult_fare,
                     busNumber: this.state.busNumber,
-                    seats:this.state.seats,
+                    seats: this.state.seats,
                     bus: this.state.bus,
+                    Bill: this.state.bill
                 }
             }} />
         }

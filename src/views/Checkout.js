@@ -237,7 +237,7 @@ export default class Checkout extends Component {
                                                     Payment
                                                 </Typography>
 
-                                                <p>  <b>Tickets Total:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"₱ " + this.state.bill + ".00"}</p>
+                                                <p>  <b>Tickets Total:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"₱ " + eval(this.state.adult_fare*this.state.adult+this.state.child_fare*this.state.child) +".00"}</p>
                                             </CardContent>
                                         </CardActionArea>
                                     </Card>

@@ -27,6 +27,7 @@ export default class Final extends Component {
             journeyTo: "",
             journeyFrom: "",
             petsa: "",
+            Bill: "",
         }
     }
 
@@ -57,6 +58,7 @@ export default class Final extends Component {
             bus: this.props.location.state.bus,
             busNumber: this.props.location.state.busNumber,
             seats: this.props.location.state.seats,
+            Bill: this.props.location.state.Bill
         });
     }
 
@@ -66,7 +68,7 @@ export default class Final extends Component {
             ticket: {
                 background: '#3b81b3',
                 width: '90%',
-                height: '300px',
+                height: '370px',
                 margin: '100px auto',
                 border: '1px solid black',
                 borderRadius: '4px',
@@ -123,7 +125,7 @@ export default class Final extends Component {
 
             },
             ticket_right: {
-                width: '40%',
+                width: '60%',
                 background: 'white',
                 padding: '20px',
                 border: '1px solid black',
@@ -214,6 +216,7 @@ export default class Final extends Component {
                                         {/* <span style={container.desc.span}> 04:10 AM</span> */}
                                     </div>
                                 </div>
+                                <h2>{this.state.busNumber}</h2>
                                 <div style={container.ticket_white} className="ticket-white">
                                     <p style={container.p}>TO </p>
                                     <h1 style={container.ticket_right_h1}>{this.state.journeyTo}</h1>
@@ -223,18 +226,23 @@ export default class Final extends Component {
                                     </div>
                                 </div>
                             </div>
+                            <center>
+                                <h3>Bill:&nbsp;&nbsp;{"₱ " + this.state.Bill + ".00"}</h3>
+                            </center>
                             <div style={container.ticketBottom} className="ticket-bottom">
                                 <div style={container.name} className="name">
                                     <h1 style={container.name_h1}>{this.state.lName + ", " + this.state.fName}</h1>
                                     <span style={container.desc.span}> PASSENGER</span>
+
                                 </div>
-                                <div style={container.seats}>
+                                <div style={container.seats} align="right">
                                     <h3>Seats: {this.state.seats}</h3>
                                 </div>
                             </div>
-                            {/* <i style={container.i} className="fas fa-barcode"></i> */}
-                            <h2>{this.state.busNumber}</h2>
-                            <span style={container.info}>Thank you for using LINKOD</span>
+                            <center><h3>{this.state.petsa}</h3>
+                                {/* <i style={container.i} className="fas fa-barcode"></i> */}
+                                <p style={container.info}>Thank you for using LINKOD</p>
+                            </center>
                         </div>
                     </div>
                 </div>

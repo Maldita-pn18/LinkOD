@@ -1,6 +1,5 @@
 import 'date-fns';
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Header from '../components/Header';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,13 +15,12 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Redirect } from "react-router-dom";
-import Checkout from './Checkout';
-
+import swal from "sweetalert";
 
 
 
@@ -37,15 +35,15 @@ export default class DateLocation extends Component {
             departureTime: "",
             arrivalTime: "",
             duration: "",
-            adult: "",
+            adult: 0,
             time: "",
-            child: "",
+            child: 0,
             journeyTo: "",
             journeyFrom: "",
             petsa: "",
             child_fare: "",
             adult_fare: "",
-            seats: "[3,1]",
+            seats: [],
             availableBus: "",
             toCheckout: false,
         }
@@ -63,6 +61,7 @@ export default class DateLocation extends Component {
     checkout = () => {
         if (this.state.toCheckout) {
             if (this.state.toCheckout) {
+
                 return <Redirect to={{
                     pathname: "/checkout",
                     state: {
@@ -94,7 +93,6 @@ export default class DateLocation extends Component {
             time: this.props.location.state.time,
             availableBus: this.props.location.state.availableBus,
         });
-
     }
     render() {
         return (
@@ -130,18 +128,26 @@ export default class DateLocation extends Component {
                     onChange={handleChange('adult')}
                     name="adult"
                     inputProps={{
-                        id: 'Adult',
+                        id: 'Adult'
                     }}
                 >
-                    <option value="" />
+                    <option value={0}>0</option>
                     <option value={1}>one</option>
                     <option value={2}>two</option>
                     <option value={3}>three</option>
+                    <option value={4}>four</option>
+                    <option value={5}>one</option>
+                    <option value={6}>two</option>
+                    <option value={7}>three</option>
+                    <option value={8}>four</option>
+                    <option value={9}>one</option>
+                    <option value={10}>two</option>
                 </Select>
                 {/* <FormHelperText>Required</FormHelperText> */}
             </FormControl>
         )
     }
+
     child() {
         const classes = makeStyles(theme => ({
             formControl: {
@@ -170,16 +176,22 @@ export default class DateLocation extends Component {
                         id: 'Child',
                     }}
                 >
-                    <option value="" />
+                    <option value={0}>0</option>
                     <option value={1}>one</option>
                     <option value={2}>two</option>
                     <option value={3}>three</option>
+                    <option value={4}>four</option>
+                    <option value={5}>one</option>
+                    <option value={6}>two</option>
+                    <option value={7}>three</option>
+                    <option value={8}>four</option>
+                    <option value={9}>one</option>
+                    <option value={10}>two</option>
                 </Select>
                 {/* <FormHelperText>Required</FormHelperText> */}
             </FormControl>
         )
     }
-
     tickets() {
         console.log("testing..", this.state.availableBus)
         let key = 0;
@@ -207,7 +219,7 @@ export default class DateLocation extends Component {
 
         let rows = [];
 
-        function busInfo(bus, Adult, Child) {
+        function busInfo(bus, Adult, Child, states, swal) {
             let style = {
                 actions: {
                     fontSize: "20px",
@@ -216,13 +228,21 @@ export default class DateLocation extends Component {
                     borderRadius: '50%'
                 }
             }
+            let seats = []
+
+            const preferredSeats = event => {
+                seats.push(event.target.value)
+                console.log(JSON.stringify(seats))
+            }
+
             for (var i = 0; i < bus.length; ++i) {
                 let available_seat = [];
                 for (const property in bus[i].bus.seats) {
-                    if(bus[i].bus.seats[property] == true){
+                    if (bus[i].bus.seats[property] == true) {
                         available_seat.push(property)
                     }
                 }
+                let busId = bus[i]._id
                 rows.push(createData(
                     bus[i].busName,
                     <div>
@@ -230,20 +250,65 @@ export default class DateLocation extends Component {
                         <p align="left">Child Price:&nbsp;&nbsp;&nbsp;{bus[i].fare.child}</p>
                         <p align="left">Adult Price:&nbsp;&nbsp;&nbsp;{bus[i].fare.adult}</p>
                         <p align="left">Available Seats:&nbsp;&nbsp;&nbsp;{JSON.stringify(available_seat)}</p>
+                        <TextField id="standard-basic" onChange={preferredSeats} label="Preferred seats" />
                     </div>,
                     bus[i].startTime,
                     bus[i].endTime,
                     bus[i].duration,
-                    // <Button color="primary" id={bus[i]._id}>BOOK THIS</Button>
                     <div>
-                        <i className="far fa-check-circle" style={style.actions} id={bus[i]._id}></i>
-                        <i className="ticketActions far fa-times-circle" style={style.actions}></i>
+                        <Button color="primary" id={busId} onClick={function () {
+                            // bus: "",
+                            // busNumber: "",
+                            // availableSeat: "",
+                            // departureTime: "",
+                            // arrivalTime: "",
+                            // duration: "",
+                            // adult: "",
+                            // time: "",
+                            // child: "",
+                            // journeyTo: "",
+                            // journeyFrom: "",
+                            // petsa: "",
+                            // child_fare: "",
+                            // adult_fare: "",
+                            // seats: [],
+                            // availableBus: "",
+                            // toCheckout: false,
+                            console.log(states)
+                            console.log(bus)
+                            console.log(busId)
+                            for (var i = 0; i < bus.length; ++i) {
+                                if (bus[i]._id === busId) {
+                                    states.bus = bus[i].busName
+                                    states.busNumber = bus[i].bus.busNumber
+                                    states.departureTime = bus[i].startTime
+                                    states.arrivalTime = bus[i].endTime
+                                    states.duration = bus[i].duration
+                                    states.child_fare = bus[i].fare.child
+                                    states.adult_fare = bus[i].fare.adult
+                                    states.seats = seats[seats.length - 1]
+                                    if (states.seats !== undefined) {
+                                        console.log(states.seats)
+                                        swal("PROCESS", "BOOKING!", "success");
+                                    } else {
+                                        swal("Caution", "Some Field/s is/are empty!", "warning");
+                                    }
+                                }
+                            }
+                        }}>
+                            <i className="far fa-check-circle" style={style.actions}></i>
+                        </Button>
                     </div>
                 ))
             }
         }
 
-        busInfo(this.state.availableBus, this.Adult(), this.child())
+        busInfo(
+            this.state.availableBus,
+            this.Adult(), this.child(),
+            this.state,
+            swal
+        )
 
         const classes = makeStyles(theme => ({
             root: {
@@ -274,7 +339,7 @@ export default class DateLocation extends Component {
                 <p>{this.state.buses}</p>
                 <Header />
                 <Grid container spacing={3} justify="center" style={{ marginTop: '7%' }}>
-                    <Grid item xs={8}>
+                    <Grid item xs={11}>
                         <Navigation />
                         <Paper className={classes.paper}>
                             <Card>
@@ -327,5 +392,4 @@ export default class DateLocation extends Component {
             </div>
         )
     }
-
 }
