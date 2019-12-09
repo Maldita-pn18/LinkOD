@@ -132,8 +132,8 @@ export default class Checkout extends Component {
         this.setState({ errors, [name]: value });
     }
     handleBack = () => {
-        this.setState({ toPrevious: true })
-        localStorage.setItem("stage", "two")
+            this.setState({ toPrevious: true })
+            localStorage.setItem("stage", "two")
     }
 
     routes = () => {
@@ -200,7 +200,7 @@ export default class Checkout extends Component {
                 width: 100,
                 padding: theme.spacing(2),
                 textAlign: 'center',
-                color: theme.palette.text.secondary
+                color: theme.palette.text.secondary,
             },
             formControl: {
                 margin: theme.spacing(1),
@@ -222,9 +222,9 @@ export default class Checkout extends Component {
             <div className={classes.root}>
                 <Header />
                 <Grid container spacing={3} justify="center" style={{ marginTop: '3%' }}>
-                    <Grid item xs={8} style={{ height: '100%' }}>
+                    <Grid item xs={8} style={{ height: '100%',boxShadow:'0px 0px 3px black' }}>
                         <Navigation />
-                        <Paper className={classes.paper}>
+                        <Paper className={classes.paper} style={{}}>
                             <Grid container justify='space-around' style={{ height: '10%' }}>
                                 <Grid style={{ width: '30%' }}>
                                     <Card className={classes.card} style={{ maxHeight: '500px', marginTop: '8%' }}>

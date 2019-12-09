@@ -219,7 +219,7 @@ export default class DateLocation extends Component {
             <div className={classes.root}>
                 <Header />
                 <Grid container spacing={3} justify="center" style={{ marginTop: '7%' }}>
-                    <Grid item xs={8}>
+                    <Grid item xs={8} style={{boxShadow:'0px 0px 3px black'}}>
                         <Navigation />
                         <Paper className={classes.paper}>
                             <Card>

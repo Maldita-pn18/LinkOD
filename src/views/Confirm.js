@@ -40,6 +40,7 @@ export default class Confirm extends Component {
             journeyTo: "",
             journeyFrom: "",
             petsa: "",
+            toCheckout: false,
             toFinal: false,
             confirm: "Save",
             bill: 0,
@@ -60,9 +61,10 @@ export default class Confirm extends Component {
     }
     confirm = () => {
         if (this.state.book === "") {
+            console.log("seats testing",this.state.seats)
             this.setState({ book: "Your booking is saved.", confirm: "View Ticket" });
             let seat = this.state.seats.split(",")
-
+            
             for (var i = 0; i < seat.length; ++i) {
                 var num = seat[i].replace('"', '')
                 let data = {
@@ -71,20 +73,21 @@ export default class Confirm extends Component {
                     to: this.state.journeyTo,
                     bus: this.state.bus,
                     busNumber: this.state.busNumber,
-                    seats: Number(num.trim()),
+                    seats: parseFloat(num.trim()),
                     departureTime: this.state.departureTime,
                     arrivalTime: this.state.arrivalTime,
                     firstname: this.state.fName,
                     lastname: this.state.lName,
                     bill: Number(this.state.bill)
                 }
+                console.log(data.seats)
                 this.save(data).then(res => {
                     console.log(res)
                 })
             }
         }
         if (this.state.book !== "") {
-            localStorage.setItem("stage","five")
+            localStorage.setItem("stage", "five")
             this.setState({ toFinal: true });
         }
     }
@@ -111,20 +114,24 @@ export default class Confirm extends Component {
                 seats: this.props.location.state.seats,
                 bill: eval(this.props.location.state.adult * this.props.location.state.adult_fare + this.props.location.state.child_fare * this.props.location.state.child)
             });
-        }else{
-            this.setState({stageChecker:true})
+        } else {
+            this.setState({ stageChecker: true })
         }
     }
-    routes = () =>{
-        if(this.state.stageChecker){
-            return <Redirect to={{pathname:'/'}}/>
+    routes = () => {
+        if (this.state.stageChecker) {
+            return <Redirect to={{ pathname: '/' }} />
         }
+    }
+    handleBack = () => {
+        this.setState({ toCheckout: true })
+        localStorage.setItem("stage", "three")
     }
 
-    final() {
-        if (this.state.toFinal) {
+    toPrevious = () => {
+        if (this.state.toCheckout) {
             return <Redirect to={{
-                pathname: "/final",
+                pathname: '/Checkout',
                 state: {
                     fName: this.state.fName,
                     lName: this.state.lName,
@@ -145,159 +152,189 @@ export default class Confirm extends Component {
                     busNumber: this.state.busNumber,
                     seats: this.state.seats,
                     bus: this.state.bus,
-                    Bill: this.state.bill
                 }
             }} />
         }
     }
 
-    render() {
-        return (
-            <div>
-                {this.tickets()}
-                {this.final()}
-                {this.routes()}
-            </div>
-        )
-    }
+        final() {
+            if (this.state.toFinal) {
+                return <Redirect to={{
+                    pathname: "/final",
+                    state: {
+                        fName: this.state.fName,
+                        lName: this.state.lName,
+                        email: this.state.email,
+                        phone: this.state.phone,
+                        paymentMethod: this.state.paymentMethod,
+                        petsa: this.state.petsa,
+                        departureTime: this.state.departureTime,
+                        arrivalTime: this.state.arrivalTime,
+                        duration: this.state.duration,
+                        adult: this.state.adult,
+                        child: this.state.child,
+                        journeyTo: this.state.journeyTo,
+                        journeyFrom: this.state.journeyFrom,
+                        petsa: this.state.petsa,
+                        child_fare: this.state.child_fare,
+                        adult_fare: this.state.adult_fare,
+                        busNumber: this.state.busNumber,
+                        seats: this.state.seats,
+                        bus: this.state.bus,
+                        Bill: this.state.bill
+                    }
+                }} />
+            }
+        }
 
-    tickets() {
-        const classes = makeStyles(theme => ({
-            root: {
-                flexGrow: 1,
-            },
-            paper: {
-                height: 140,
-                width: 100,
-                padding: theme.spacing(2),
-                textAlign: 'center',
-                color: theme.palette.text.secondary
-            },
-            formControl: {
-                margin: theme.spacing(1),
-                minWidth: 120,
-            },
-            selectEmpty: {
-                marginTop: theme.spacing(2),
+        render() {
+            return (
+                <div>
+                    {this.tickets()}
+                    {this.final()}
+                    {this.routes()}
+                    {this.toPrevious()}
+                </div>
+            )
+        }
 
-            },
-            pos: {
-                marginBottom: 12,
-            },
-            textField: {
-                marginLeft: theme.spacing(1),
-                marginRight: theme.spacing(1),
-            },
-        }));
-        return (
-            <div className={classes.root}>
-                <Header />
-                <Grid container spacing={3} justify="center" style={{ marginTop: '5%%' }}>
-                    <Grid item xs={8}>
-                        <Navigation />
-                        <Paper className={classes.paper} style={{ borderColor: 'secondary' }}>
-                            <Grid container justify='space-around' style={{ height: '10%' }}>
-                                <Grid style={{ width: '30%' }}>
-                                    <Card className={classes.card} style={{ maxHeight: '300px', marginTop: '8%' }}>
-                                        <CardActionArea>
-                                            <CardContent>
-                                                <Typography gutterBottom variant="h5" component="h2">
-                                                    Journey
+        tickets() {
+            const classes = makeStyles(theme => ({
+                root: {
+                    flexGrow: 1,
+                },
+                paper: {
+                    height: 140,
+                    width: 100,
+                    padding: theme.spacing(2),
+                    textAlign: 'center',
+                    color: theme.palette.text.secondary
+                },
+                formControl: {
+                    margin: theme.spacing(1),
+                    minWidth: 120,
+                },
+                selectEmpty: {
+                    marginTop: theme.spacing(2),
+
+                },
+                pos: {
+                    marginBottom: 12,
+                },
+                textField: {
+                    marginLeft: theme.spacing(1),
+                    marginRight: theme.spacing(1),
+                },
+            }));
+            return (
+                <div className={classes.root}>
+                    <Header />
+                    <Grid container spacing={3} justify="center" style={{ marginTop: '5%%' }}>
+                        <Grid item xs={8} style={{boxShadow:'0px 0px 3px black',marginTop:'50px'}}>
+                            <Navigation />
+                            <Paper className={classes.paper} style={{ borderColor: 'secondary' }}>
+                                <Grid container justify='space-around' style={{ height: '10%' }}>
+                                    <Grid style={{ width: '30%' }}>
+                                        <Card className={classes.card} style={{ maxHeight: '300px', marginTop: '8%' }}>
+                                            <CardActionArea>
+                                                <CardContent>
+                                                    <Typography gutterBottom variant="h5" component="h2">
+                                                        Journey
                                                 </Typography>
 
-                                                <p><b>Date:</b>&nbsp;{this.state.petsa}</p>
-                                                <p><b>Depart from:</b> &nbsp;{this.state.journeyFrom + " / " + this.state.departureTime}</p>
-                                                <p><b> Arrive to: </b> &nbsp;{this.state.journeyTo + " / " + this.state.arrivalTime}</p>
-                                                <p><b>Bus: </b>{this.state.bus}</p>
-                                                <p><b>Bus Number:</b> {this.state.busNumber}</p>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
+                                                    <p><b>Date:</b>&nbsp;{this.state.petsa}</p>
+                                                    <p><b>Depart from:</b> &nbsp;{this.state.journeyFrom + " / " + this.state.departureTime}</p>
+                                                    <p><b> Arrive to: </b> &nbsp;{this.state.journeyTo + " / " + this.state.arrivalTime}</p>
+                                                    <p><b>Bus: </b>{this.state.bus}</p>
+                                                    <p><b>Bus Number:</b> {this.state.busNumber}</p>
+                                                </CardContent>
+                                            </CardActionArea>
+                                        </Card>
+                                    </Grid>
+                                    <Grid style={{ width: '30%', maxHeight: '300px', marginTop: '2.5%' }}>
+                                        <Card className={classes.card}>
+                                            <CardActionArea>
+                                                <CardContent>
+                                                    <Typography gutterBottom variant="h5" component="h2">
+                                                        Tickets
+                                                </Typography>
+
+                                                    <p><b>Adult:</b> &nbsp;{this.state.adult + " x " + this.state.adult_fare}</p>
+                                                    <p><b>SP:</b> &nbsp;{this.state.child + " x " + this.state.child_fare}</p>
+                                                    <p><b>Seats:</b> &nbsp; {this.state.seats}</p>
+                                                </CardContent>
+                                            </CardActionArea>
+                                        </Card>
+                                    </Grid>
+                                    <Grid style={{ width: '30%', marginTop: '2.5%', }}>
+                                        <Card className={classes.card}>
+                                            <CardActionArea>
+                                                <CardContent>
+                                                    <Typography gutterBottom variant="h5" component="h2">
+                                                        Payment
+                                                </Typography>
+
+                                                    <p>  <b>Tickets Total:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"₱ " + this.state.bill + ".00"}</p>
+                                                </CardContent>
+                                            </CardActionArea>
+                                        </Card>
+                                    </Grid>
                                 </Grid>
-                                <Grid style={{ width: '30%', maxHeight: '300px', marginTop: '2.5%' }}>
-                                    <Card className={classes.card}>
-                                        <CardActionArea>
+                                <br></br>
+                                <hr style={{ width: '96%' }}></hr>
+                                <Grid >
+                                    <Grid container justify='space-around'>
+                                        <Card style={{ width: '97%' }}>
                                             <CardContent>
-                                                <Typography gutterBottom variant="h5" component="h2">
-                                                    Tickets
-                                                </Typography>
-
-                                                <p><b>Adult:</b> &nbsp;{this.state.adult + " x " + this.state.adult_fare}</p>
-                                                <p><b>SP:</b> &nbsp;{this.state.child + " x " + this.state.child_fare}</p>
-                                                <p><b>Seats:</b> &nbsp; {this.state.seats}</p>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                </Grid>
-                                <Grid style={{ width: '30%', marginTop: '2.5%', }}>
-                                    <Card className={classes.card}>
-                                        <CardActionArea>
-                                            <CardContent>
-                                                <Typography gutterBottom variant="h5" component="h2">
-                                                    Payment
-                                                </Typography>
-
-                                                <p>  <b>Tickets Total:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"₱ " + this.state.bill + ".00"}</p>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                </Grid>
-                            </Grid>
-                            <br></br>
-                            <hr style={{ width: '96%' }}></hr>
-                            <Grid >
-                                <Grid container justify='space-around'>
-                                    <Card style={{ width: '97%' }}>
-                                        <CardContent>
-                                            <Grid>
-                                                <Typography gutterBottom variant="h6" component="h6">
-                                                    <b>Personal Details</b>
-                                                </Typography>
                                                 <Grid>
                                                     <Typography gutterBottom variant="h6" component="h6">
-                                                        First Name : {this.state.fName}
+                                                        <b>Personal Details</b>
                                                     </Typography>
-                                                    <Typography gutterBottom variant="h6" component="h6">
-                                                        Last Name : {this.state.lName}
-                                                    </Typography>
-                                                    <Typography gutterBottom variant="h6" component="h6">
-                                                        Email : {this.state.email}
-                                                    </Typography>
-                                                    <Typography gutterBottom variant="h6" component="h6">
-                                                        Phone : {this.state.phone}
-                                                    </Typography>
-                                                    <Typography gutterBottom variant="h6" component="h6">
-                                                        Payment Method : {this.state.paymentMethod}
-                                                    </Typography>
+                                                    <Grid>
+                                                        <Typography gutterBottom variant="h6" component="h6">
+                                                            First Name : {this.state.fName}
+                                                        </Typography>
+                                                        <Typography gutterBottom variant="h6" component="h6">
+                                                            Last Name : {this.state.lName}
+                                                        </Typography>
+                                                        <Typography gutterBottom variant="h6" component="h6">
+                                                            Email : {this.state.email}
+                                                        </Typography>
+                                                        <Typography gutterBottom variant="h6" component="h6">
+                                                            Phone : {this.state.phone}
+                                                        </Typography>
+                                                        <Typography gutterBottom variant="h6" component="h6">
+                                                            Payment Method : {this.state.paymentMethod}
+                                                        </Typography>
 
+                                                    </Grid>
                                                 </Grid>
-                                            </Grid>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                            </Grid>
-                            <p style={{ marginLeft: '2%' }}>{this.state.book} </p>
-                            <br></br>
-                            <br></br>
-                            <hr style={{ width: '96%' }}></hr>
-                            <Card>
-                                <CardActions>
-                                    <Grid container justify='flex-end'>
-                                        <Button size="small" color="primary" type="submit" onClick={this.confirm} >{this.state.confirm}</Button>
-                                        <Grid container justify='flex-end'>
-                                            <Button size="small" color="primary">
-                                                Back
-                                    </Button>
-                                        </Grid>
+                                            </CardContent>
+                                        </Card>
                                     </Grid>
-                                </CardActions>
-                            </Card>
+                                </Grid>
+                                <p style={{ marginLeft: '2%' }}>{this.state.book} </p>
+                                <br></br>
+                                <br></br>
+                                <hr style={{ width: '96%' }}></hr>
+                                <Card>
+                                    <CardActions>
+                                        <Grid container justify='flex-end'>
+                                            <Button size="small" color="primary" type="submit" onClick={this.confirm} >{this.state.confirm}</Button>
+                                            <Grid container justify='flex-end'>
+                                                <Button size="small" color="primary"  onClick={this.handleBack}>
+                                                    Back
+                                    </Button>
+                                            </Grid>
+                                        </Grid>
+                                    </CardActions>
+                                </Card>
 
-                        </Paper>
+                            </Paper>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </div >
-        )
-    }
+                </div >
+            )
+        }
 
-}
+    }

@@ -21,6 +21,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Redirect } from "react-router-dom";
 import swal from "sweetalert";
+import Swal from "sweetalert2";
 
 
 
@@ -52,7 +53,7 @@ export default class DateLocation extends Component {
 
     validation = () => {
         if (this.state.adult === 0 && this.state.child === 0) {
-            swal("Oops","Fields that are required should be filled!","error")
+            swal("Oops", "Fields that are required should be filled!", "error")
         } else {
             this.setState({ toCheckout: true })
         }
@@ -60,7 +61,7 @@ export default class DateLocation extends Component {
 
     checkout = () => {
         if (this.state.toCheckout) {
-            localStorage.setItem("stage","three")
+            localStorage.setItem("stage", "three")
             return <Redirect to={{
                 pathname: "/checkout",
                 state: {
@@ -78,8 +79,9 @@ export default class DateLocation extends Component {
                     busNumber: this.state.busNumber,
                     seats: JSON.stringify(this.state.seats),
                     bus: this.state.bus,
-                    oras:this.state.time,
+                    oras: this.state.time,
                     busInformation: this.state.availableBus,
+
                 }
             }} />
         }
@@ -196,7 +198,7 @@ export default class DateLocation extends Component {
         )
     }
     tickets() {
-        console.log("testing..", this.state.availableBus)
+        // console.log("testing..", this.state.availableBus)
         let key = 0;
         const StyledTableCell = withStyles(theme => ({
             head: {
@@ -235,7 +237,6 @@ export default class DateLocation extends Component {
 
             const preferredSeats = event => {
                 seats.push(event.target.value)
-                console.log(JSON.stringify(seats))
             }
 
             for (var i = 0; i < bus.length; ++i) {
@@ -277,9 +278,9 @@ export default class DateLocation extends Component {
                             // seats: [],
                             // availableBus: "",
                             // toCheckout: false,
-                            console.log(states)
-                            console.log(bus)
-                            console.log(busId)
+                            // console.log(states)
+                            // console.log(bus)
+                            // console.log(busId)
                             for (var i = 0; i < bus.length; ++i) {
                                 if (bus[i]._id === busId) {
                                     states.bus = bus[i].busName
@@ -292,7 +293,15 @@ export default class DateLocation extends Component {
                                     states.seats = seats[seats.length - 1]
                                     if (states.seats !== undefined) {
                                         console.log(states.seats)
-                                        swal("PROCESS", "BOOKING!", "success");
+                                        // swal("PROCESS", "BOOKING!", "success");
+                                        Swal.fire({
+                                            title: states.bus,
+                                            html: 'Bus Number: <b>'+states.busNumber+'</b><br>Seat Number: <b>'+states.seats+"</b><br>Departure Time: <b>"+states.departureTime+"</b>",
+                                            imageUrl: '/bus.png',
+                                            imageWidth: 700,
+                                            imageHeight: 350,
+                                            imageAlt: 'Custom image',
+                                        })
                                     } else {
                                         swal("Caution", "Some Field/s is/are empty!", "warning");
                                     }
@@ -342,7 +351,7 @@ export default class DateLocation extends Component {
                 <p>{this.state.buses}</p>
                 <Header />
                 <Grid container spacing={3} justify="center" style={{ marginTop: '7%' }}>
-                    <Grid item xs={11}>
+                    <Grid item xs={11} style={{boxShadow:'0px 0px 3px black'}}>
                         <Navigation />
                         <Paper className={classes.paper}>
                             <Card>
@@ -378,7 +387,6 @@ export default class DateLocation extends Component {
                                     </Table>
                                 </CardContent>
                                 <CardActions>
-                                    <p>&nbsp;&nbsp;Price:</p>
                                     <Grid container justify='flex-end'>
                                         <Button size="small" color="primary" type="submit" onClick={this.validation} >Checkout</Button>
                                         <Grid container justify='flex-end'>
