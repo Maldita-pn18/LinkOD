@@ -88,7 +88,7 @@ export default class DateLocation extends Component {
                         fromRequiredColor: { color: "black" },
                         availableBus: callback.data.data.body.buses
                     })
-                    console.log("test",this.state.availableBus)
+                    console.log("Date Location test",this.state.availableBus)
                 } else {
                     swal("We're Sorry!", "Routes unavailable!", "info");
                 }
